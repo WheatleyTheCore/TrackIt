@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import { Input } from "react-native-elements";
 
 export default ({ saveValue, placeholder, index, attributes }) => {
   const [value, setValue] = useState("");
@@ -9,11 +9,9 @@ export default ({ saveValue, placeholder, index, attributes }) => {
   }, [attributes]);
 
   return (
-    <TextInput
-      style={{
+    <Input
+      containerStyle={{
         height: 30,
-        borderBottomColor: "gray",
-        borderBottomWidth: 1,
         width: "70%",
       }}
       onChangeText={(text) => {

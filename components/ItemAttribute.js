@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 
-import TextInput from "./TextInput";
+import AttributeTextInput from "./AttributeTextInput";
 
 export default ({ index, attributes, setAttributes }) => {
   const [title, setTitle] = useState("");
@@ -23,7 +23,7 @@ export default ({ index, attributes, setAttributes }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
+      <AttributeTextInput
         saveValue={setTitle}
         placeholder="name"
         index={index}
