@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 
-export default ({ saveValue, placeholder }) => {
+export default ({ saveValue, placeholder, index, attributes }) => {
   const [value, setValue] = useState("");
+
+  useEffect(() => {
+    setValue(attributes[index]);
+  }, [attributes]);
 
   return (
     <TextInput
@@ -10,7 +14,7 @@ export default ({ saveValue, placeholder }) => {
         height: 30,
         borderBottomColor: "gray",
         borderBottomWidth: 1,
-        width: "50%",
+        width: "70%",
       }}
       onChangeText={(text) => {
         setValue(text);

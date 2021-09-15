@@ -15,7 +15,7 @@ import { saveData, loadData } from "../utils/storageUtils";
 //TODO make this screen scrollable if there are lots and lots of attributes.
 
 export default ({ navigation }) => {
-  const [attributes, setAttributes] = useState([{ title: "", type: "Text" }]);
+  const [attributes, setAttributes] = useState([""]);
 
   return (
     <View style={styles.container}>
@@ -35,7 +35,7 @@ export default ({ navigation }) => {
           title="new attribute"
           onPress={() => {
             let attrs = attributes;
-            attrs[attrs.length] = { title: "", type: "Text" };
+            attrs[attrs.length] = "";
             setAttributes([...attrs]);
           }}
         />

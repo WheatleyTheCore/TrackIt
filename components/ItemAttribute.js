@@ -1,32 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
+import { EvilIcons } from "@expo/vector-icons";
 
 import TextInput from "./TextInput";
-import TypeSelector from "./TypeSelector";
 
 export default ({ index, attributes, setAttributes }) => {
   const [title, setTitle] = useState("");
-  const [type, setType] = useState("Text");
+
+  const removeAttribute = (index) => {
+    let attrs = attributes;
+    console.log(`attrs before operation: ${attrs}`);
+    attrs.splice(index, 1);
+    console.log(`attrs after operation: ${attrs}`);
+    setAttributes([...attrs]);
+  };
 
   useEffect(() => {
     let attrs = attributes;
-    attrs[index] = { title: title, type: type };
+    attrs[index] = title;
     setAttributes([...attrs]);
-  }, [title, type]);
-
-  const types = [
-    "Text",
-    "Number",
-    "Location",
-    "Accelerometer",
-    "Gyroscope",
-    "Magnetometer",
-  ];
+  }, [title]);
 
   return (
     <View style={styles.container}>
-      <TextInput saveValue={setTitle} placeholder="name" />
-      <TypeSelector saveValue={setType} types={types} />
+      <TextInput
+        saveValue={setTitle}
+        placeholder="name"
+        index={index}
+        attributes={attributes}
+      />
+      <EvilIcons
+        name="trash"
+        size={24}
+        onPress={() => removeAttribute(index)}
+      />
     </View>
   );
 };
