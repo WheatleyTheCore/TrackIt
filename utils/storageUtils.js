@@ -16,3 +16,12 @@ export const loadData = async (setStoredData, storage_key) => {
     console.log(e);
   }
 };
+
+export const getAllKeys = async (setCollections) => {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    setCollections(keys);
+  } catch (e) {
+    console.log(e);
+  }
+};

@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
 
-import ItemAttribute from "../components/ItemAttribute";
+import CollectionList from "../components/CollectionList";
 
-import { saveData, loadData } from "../utils/storageUtils";
+import { saveData, loadData, getAllKeys } from "../utils/storageUtils";
 
 export default ({ navigation }) => {
-  const [data, setData] = useState("");
-  const [storedData, setStoredData] = useState("");
+  const [collections, setCollections] = useState([]);
+  const [didLoad, setDidLoad] = useState(false);
 
   useEffect(() => {
-    loadData(setStoredData, "test");
-  });
+    if (!didLoad) {
+      getAllKeys(setCollections);
+      setDidLoad(true);
+    }
+  }, [didLoad]);
+
   return (
     <View style={styles.container}>
-      <Text>Data in storage: {storedData}</Text>
-      <Button
-        title="open modal"
-        onPress={() => navigation.navigate("CreateCollection")}
-      />
+      <ScrollView style={{ width: "100%" }}>
+        <CollectionList collections={collections} />
+        <Button
+          title="open modal"
+          onPress={() => navigation.navigate("CreateCollection")}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -29,5 +35,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
   },
 });
