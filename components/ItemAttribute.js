@@ -19,6 +19,7 @@ export default ({ index, attributes, setAttributes }) => {
     let attrs = attributes;
     attrs[index] = title;
     setAttributes([...attrs]);
+    console.log("updated title: " + title);
   }, [title]);
 
   return (

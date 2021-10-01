@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/EvilIcons";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export default ({ collection, deleteCollection }) => {
+export default ({ navigation, collection, deleteCollection }) => {
   const rightSwipe = (progress, dragX) => {
     return (
       <TouchableOpacity
@@ -28,7 +28,12 @@ export default ({ collection, deleteCollection }) => {
 
   return (
     <Swipeable renderRightActions={rightSwipe} key={collection}>
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => {
+          navigation.navigate("AddItem", { collectionTitle: collection });
+        }}
+      >
         <Text>{collection}</Text>
       </TouchableOpacity>
     </Swipeable>

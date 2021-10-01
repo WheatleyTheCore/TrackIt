@@ -13,7 +13,8 @@ export const saveData = async (data, storage_key) => {
 
 export const loadData = async (setStoredData, storage_key) => {
   try {
-    const val = await AsyncStorage.getItem(storage_key);
+    let val = await AsyncStorage.getItem(storage_key);
+    val = val != null ? JSON.parse(val) : null;
     setStoredData(val);
   } catch (e) {
     console.log(e);

@@ -4,10 +4,6 @@ import { Input } from "react-native-elements";
 export default ({ saveValue, placeholder, index, attributes }) => {
   const [value, setValue] = useState("");
 
-  useEffect(() => {
-    setValue(attributes[index]);
-  }, [attributes]);
-
   return (
     <Input
       containerStyle={{

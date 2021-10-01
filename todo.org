@@ -1,0 +1,10 @@
+TODO -*- mode: org -*-
+
+* TODO
+** Functionality
+- For some reason, the attribute text input misses the last letter. It also doesn't like autocorrect at the end of editing
+** Structure
+ - abstract flatlist separator into its own component
+
+** Styles
+- abstract reused styles into global styles.

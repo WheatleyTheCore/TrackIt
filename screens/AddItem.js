@@ -1,12 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  Button,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  View,
+} from "react-native";
 import { Input } from "react-native-elements";
 
+import { loadData } from "../utils/storageUtils";
+
 export default ({ route, navigation }) => {
+  const [collection, setCollection] = useState({});
+  const [didLoad, setDidLoad] = useState(false);
+
+  useEffect(() => {
+    if (!didLoad) {
+      loadData(setCollection, route.params.collectionTitle);
+      setDidLoad(true);
+    }
+  }, [didLoad]);
   return (
-    <View stlye={styles.container}>
-      <Text>{route.params.test}</Text>
-    </View>
+    <SafeAreaView stlye={styles.container}>
+      {didLoad && Object.keys(collection).length > 0 ? (
+        <FlatList
+          data={collection.structure.userDefinedAttributes}
+          keyExtractor={(attr) =>
+            collection.structure.userDefinedAttributes.indexOf(attr).toString()
+          } //just set key equal to index
+          renderItem={({ item }) => {
+            return <Text>{item}</Text>;
+          }}
+          ItemSeparatorComponent={() => {
+            return (
+              <View
+                style={{
+                  height: StyleSheet.hairlineWidth,
+                  backgroundColor: "black",
+                }}
+              />
+            );
+          }}
+        />
+      ) : (
+        <Text>Auto-Record Data</Text>
+      )}
+    </SafeAreaView>
   );
 };
 

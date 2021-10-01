@@ -48,6 +48,7 @@ export default ({ navigation }) => {
             <CollectionListItem
               collection={item}
               deleteCollection={() => handleDelete(index)}
+              navigation={navigation}
             />
           );
         }}
@@ -90,6 +91,8 @@ const styles = StyleSheet.create({
     transform: [
       {
         translateX: "100",
+      },
+      {
         translateY: "-45%",
       },
     ],

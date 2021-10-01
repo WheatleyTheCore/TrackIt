@@ -68,7 +68,10 @@ export default ({ navigation }) => {
             //TODO get collection name and use that as save key
             saveData(data, collectionName);
 
-            navigation.navigate("AddItem", { test: "what up this is a test" });
+            navigation.navigate("AddItem", {
+              test: "what up this is a test",
+              collectionTitle: collectionName,
+            });
           }}
         />
       </ScrollView>
