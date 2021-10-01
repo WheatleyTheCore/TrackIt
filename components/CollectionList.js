@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import { ListItem } from "react-native-elements";
+import { SafeAreaView, Pressable, Text, StyleSheet } from "react-native";
+import { CollectionListItem } from "./CollectionListItem";
+import { FlatList, RectButton } from "react-native-gesture-handler";
+//TODO use gesture handler like in that youtube video (rewatch and do same thing)
 
 export default ({ collections }) => {
-  return collections.map((collection, index) => {
-    return (
-      <ListItem key={index} bottomDivider>
-        <ListItem.Content>
-          <ListItem.Title>{collection}</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-    );
-  });
+  return (
+    <SafeAreaView>
+      <FlatList
+        data={collections}
+        renderItem={(collection) => {
+          <RectButton>
+            <CollectionListItem collection={collection} />
+          </RectButton>;
+        }}
+        itemSeparatorComponent={() => {
+          <View
+            style={{
+              height: StyleSheet.hairlineWidth,
+              backgroundColor: "green",
+            }}
+          />;
+        }}
+      />
+    </SafeAreaView>
+  );
 };

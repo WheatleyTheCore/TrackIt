@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from "./screens/Home";
 import CreateCollection from "./screens/CreateCollection";
+import AddItem from "./screens/AddItem";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Group>
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="AddItem" component={AddItem} />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: "modal" }}>
           <Stack.Screen name="CreateCollection" component={CreateCollection} />

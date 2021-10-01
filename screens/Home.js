@@ -1,13 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  Button,
+  ScrollView,
+  Animated,
+  TouchableOpacity,
+} from "react-native";
+import { Ionicons } from "react-native-vector-icons";
+import { FlatList, RectButton } from "react-native-gesture-handler";
 
-import CollectionList from "../components/CollectionList";
+import CollectionListItem from "../components/CollectionListItem";
 
-import { saveData, loadData, getAllKeys } from "../utils/storageUtils";
+import {
+  saveData,
+  loadData,
+  getAllKeys,
+  deleteCollection,
+} from "../utils/storageUtils";
 
 export default ({ navigation }) => {
   const [collections, setCollections] = useState([]);
   const [didLoad, setDidLoad] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
 
   useEffect(() => {
     if (!didLoad) {
@@ -16,16 +33,48 @@ export default ({ navigation }) => {
     }
   }, [didLoad]);
 
+  const handleDelete = (index) => {
+    deleteCollection(collections[index]);
+    let temp = [...collections];
+    temp.splice(index, 1);
+    setCollections(temp);
+  };
   return (
-    <View style={styles.container}>
-      <ScrollView style={{ width: "100%" }}>
-        <CollectionList collections={collections} />
-        <Button
-          title="open modal"
-          onPress={() => navigation.navigate("CreateCollection")}
-        />
-      </ScrollView>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={collections}
+        renderItem={({ item, index }) => {
+          return (
+            <CollectionListItem
+              collection={item}
+              deleteCollection={() => handleDelete(index)}
+            />
+          );
+        }}
+        keyExtractor={(collection) =>
+          collections.indexOf(collection).toString()
+        }
+        ItemSeparatorComponent={() => {
+          return (
+            <View
+              style={{
+                height: StyleSheet.hairlineWidth,
+                backgroundColor: "black",
+              }}
+            />
+          );
+        }}
+      />
+
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => {
+          navigation.navigate("CreateCollection");
+        }}
+      >
+        <Ionicons name="add-sharp" size={40} color="green" />
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
@@ -36,5 +85,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+  },
+  addButton: {
+    transform: [
+      {
+        translateX: "100",
+        translateY: "-45%",
+      },
+    ],
   },
 });
