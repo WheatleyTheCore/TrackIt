@@ -23,31 +23,37 @@ export default ({ route, navigation }) => {
     }
   }, [didLoad]);
   return (
-    <SafeAreaView stlye={styles.container}>
-      {didLoad && Object.keys(collection).length > 0 ? (
-        <FlatList
-          data={collection.structure.userDefinedAttributes}
-          keyExtractor={(attr) =>
-            collection.structure.userDefinedAttributes.indexOf(attr).toString()
-          } //just set key equal to index
-          renderItem={({ item }) => {
-            return <Text>{item}</Text>;
-          }}
-          ItemSeparatorComponent={() => {
-            return (
-              <View
-                style={{
-                  height: StyleSheet.hairlineWidth,
-                  backgroundColor: "black",
-                }}
-              />
-            );
-          }}
-        />
-      ) : (
-        <Text>Auto-Record Data</Text>
-      )}
-    </SafeAreaView>
+    <Text>under construction</Text>
+    //TODO update this to work with new object prefab rather than the array
+    // it's probably easiest to just use Object.keys(prefab obj) and keep the rest the same
+    //
+    //
+    //
+    // <SafeAreaView stlye={styles.container}>
+    //   {didLoad && Object.keys(collection).length > 0 ? (
+    //     <FlatList
+    //       data={collection.structure.userDefinedAttributes}
+    //       keyExtractor={(attr) =>
+    //         collection.structure.userDefinedAttributes.indexOf(attr).toString()
+    //       } //just set key equal to index
+    //       renderItem={({ item }) => {
+    //         return <Text>{item}</Text>;
+    //       }}
+    //       ItemSeparatorComponent={() => {
+    //         return (
+    //           <View
+    //             style={{
+    //               height: StyleSheet.hairlineWidth,
+    //               backgroundColor: "black",
+    //             }}
+    //           />
+    //         );
+    //       }}
+    //     />
+    //   ) : (
+    //     <Text>Auto-Record Data</Text>
+    //   )}
+    // </SafeAreaView>
   );
 };
 

@@ -3,6 +3,7 @@ TODO -*- mode: org -*-
 * TODO
 ** Functionality
 - For some reason, the attribute text input misses the last letter. It also doesn't like autocorrect at the end of editing
+- Create input component for addItem. It should have the attribute name above it or as a placeholder.
 ** Structure
  - abstract flatlist separator into its own component
 

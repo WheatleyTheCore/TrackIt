@@ -1,5 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import { Input } from "react-native-elements";
 
 import ItemAttribute from "../components/ItemAttribute";
@@ -13,6 +21,7 @@ export default ({ navigation }) => {
   const [collectionName, setCollectionName] = useState("");
   const [attributes, setAttributes] = useState([""]);
   const [sensors, setSensors] = useState([]);
+  const userAttributesRef = useRef();
 
   return (
     <View style={styles.container}>
@@ -28,19 +37,21 @@ export default ({ navigation }) => {
           value={collectionName}
           placeholder={"Collection Name"}
         />
-        <View>
+        <View ref={userAttributesRef}>
           <Text>Attributes</Text>
-          {attributes.map((attr, index) => {
-            console.log(`rendering index ${index}`);
-            return (
-              <ItemAttribute
-                index={index}
-                key={index}
-                attributes={attributes}
-                setAttributes={setAttributes}
-              />
-            );
-          })}
+          <FlatList
+            data={attributes}
+            keyExtractor={(attr) => attributes.indexOf(attr).toString()}
+            renderItem={({ item, index }) => {
+              return (
+                <ItemAttribute
+                  index={index}
+                  attributes={attributes}
+                  setAttributes={setAttributes}
+                />
+              );
+            }}
+          />
           <Button
             title="new attribute"
             onPress={() => {
@@ -57,15 +68,19 @@ export default ({ navigation }) => {
         <Button
           title="Create Collection"
           onPress={() => {
+            const userAttributesPrefab = attributes.reduce((acc, curr) => {
+              acc[curr] = "";
+              return acc;
+            }, {});
+
             const data = JSON.stringify({
               structure: {
-                userDefinedAttributes: attributes,
+                userDefinedAttributes: userAttributesPrefab,
                 sensors: sensors,
               },
               items: [],
             });
 
-            //TODO get collection name and use that as save key
             saveData(data, collectionName);
 
             navigation.navigate("AddItem", {
