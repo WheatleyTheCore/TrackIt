@@ -20,8 +20,6 @@ export default ({ route, navigation }) => {
   useEffect(() => {
     if (!didLoad) {
       loadData(setCollection, route.params.collectionTitle);
-
-      console.log(collection);
       setDidLoad(true);
     }
   }, [didLoad]);
@@ -29,10 +27,9 @@ export default ({ route, navigation }) => {
     <SafeAreaView style={styles.container}>
       {Object.keys(collection).length > 0 && (
         <FlatList
-          data={userAttrs}
+          data={Object.keys(collection.structure.userDefinedAttributes)}
           renderItem={({ item }) => {
-            <Text>{item}</Text>;
-            console.log(collection);
+            return <Text>{item}</Text>;
           }}
         />
       )}
