@@ -25,71 +25,75 @@ export default ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Input
-          containerStyle={{
-            height: 30,
-            width: "70%",
-          }}
-          onChangeText={(text) => {
-            setCollectionName(text);
-          }}
-          value={collectionName}
-          placeholder={"Collection Name"}
-        />
-        <View ref={userAttributesRef}>
-          <Text>Attributes</Text>
-          <FlatList
-            data={attributes}
-            keyExtractor={(attr) => attributes.indexOf(attr).toString()}
-            renderItem={({ item, index }) => {
-              return (
-                <ItemAttribute
-                  index={index}
-                  attributes={attributes}
-                  setAttributes={setAttributes}
-                />
-              );
-            }}
-          />
-          <Button
-            title="new attribute"
-            onPress={() => {
-              let attrs = attributes;
-              attrs[attrs.length] = "";
-              setAttributes([...attrs]);
-            }}
-          />
-        </View>
-        <View>
-          <Text>Sensors to record when saving item</Text>
-          <SensorSelector setSensors={setSensors} />
-        </View>
-        <Button
-          title="Create Collection"
-          onPress={() => {
-            const userAttributesPrefab = attributes.reduce((acc, curr) => {
-              acc[curr] = "";
-              return acc;
-            }, {});
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <Input
+              containerStyle={{
+                height: 30,
+                width: "70%",
+              }}
+              onChangeText={(text) => {
+                setCollectionName(text);
+              }}
+              value={collectionName}
+              placeholder={"Collection Name"}
+            />
+            <Text>Attributes</Text>
+          </>
+        }
+        ListFooterComponent={
+          <>
+            <Button
+              title="new attribute"
+              onPress={() => {
+                let attrs = attributes;
+                attrs[attrs.length] = "";
+                setAttributes([...attrs]);
+              }}
+            />
+            <View>
+              <Text>Sensors to record when saving item</Text>
+              <SensorSelector setSensors={setSensors} />
+            </View>
+            <Button
+              title="Create Collection"
+              onPress={() => {
+                const userAttributesPrefab = attributes.reduce((acc, curr) => {
+                  acc[curr] = "";
+                  return acc;
+                }, {});
 
-            const data = JSON.stringify({
-              structure: {
-                userDefinedAttributes: userAttributesPrefab,
-                sensors: sensors,
-              },
-              items: [],
-            });
+                const data = JSON.stringify({
+                  structure: {
+                    userDefinedAttributes: userAttributesPrefab,
+                    sensors: sensors,
+                  },
+                  items: [],
+                });
 
-            saveData(data, collectionName);
+                saveData(data, collectionName);
 
-            navigation.navigate("AddItem", {
-              test: "what up this is a test",
-              collectionTitle: collectionName,
-            });
-          }}
-        />
-      </ScrollView>
+                navigation.navigate("AddItem", {
+                  test: "what up this is a test",
+                  collectionTitle: collectionName,
+                });
+              }}
+            />
+          </>
+        }
+        data={attributes}
+        keyExtractor={(attr) => attributes.indexOf(attr).toString()}
+        renderItem={({ item, index }) => {
+          return (
+            <ItemAttribute
+              index={index}
+              attributes={attributes}
+              setAttributes={setAttributes}
+            />
+          );
+        }}
+      />
     </View>
   );
 };

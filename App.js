@@ -14,13 +14,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Group>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="AddItem" component={AddItem} />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: "modal" }}>
-          <Stack.Screen name="CreateCollection" component={CreateCollection} />
-        </Stack.Group>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="AddItem" component={AddItem} />
+        <Stack.Screen name="CreateCollection" component={CreateCollection} />
       </Stack.Navigator>
     </NavigationContainer>
   );
