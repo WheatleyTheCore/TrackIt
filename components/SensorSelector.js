@@ -5,13 +5,7 @@ import { CheckBox } from "react-native-elements";
 export default ({ setSensors }) => {
   //boxes in order: accelerometer, barometer, gyroscope, magnometer, pedometer
   const [checkBoxStates, setCheckBoxStates] = useState([0, 0, 0, 0, 0]);
-  const boxTitles = [
-    "Accelerometer",
-    "Barometer",
-    "Gyroscope",
-    "Magnometer",
-    "Pedometer",
-  ];
+  const boxTitles = ["Accelerometer", "Barometer", "Gyroscope", "Magnetometer"];
 
   useEffect(() => {
     //make this update sensors list and save that alongside attributes
