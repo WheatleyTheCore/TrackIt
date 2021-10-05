@@ -18,7 +18,7 @@ import {
 
 import Input from "../components/Input";
 
-import { loadData } from "../utils/storageUtils";
+import { saveData, loadData } from "../utils/storageUtils";
 
 export default ({ route, navigation }) => {
   const [collection, setCollection] = useState({});
@@ -156,24 +156,59 @@ export default ({ route, navigation }) => {
             z: accelerometerData.z,
           })
         );
-        // save to disk
+        updateItem(
+          "Barometer",
+          JSON.stringify({
+            pressure: barometerData.pressure,
+          })
+        );
+        updateItem(
+          "Gyroscope",
+          JSON.stringify({
+            x: gyroscopeData.x,
+            y: gyroscopeData.y,
+            z: gyroscopeData.z,
+          })
+        );
+        updateItem(
+          "Magnetometer",
+          JSON.stringify({
+            x: magnetometerData.x,
+            y: magnetometerData.y,
+            z: magnetometerData.z,
+          })
+        );
       })
       .catch((e) => {
         console.log("there was an error");
       });
   };
 
-  const getDate = () => {
+  const appendDate = () => {
     const date = new Date();
-    return `${date.getMonth()} ${date.getDate()} ${date.getFullYear()}`;
+    updateItem(
+      "Date",
+      `${date.getMonth()} ${date.getDate()} ${date.getFullYear()}`
+    );
   };
 
-  const getTime = () => {
+  const appendTime = () => {
     const date = new Date();
-    return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    updateItem(
+      "Time",
+      `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    );
   };
 
-  const saveItem = () => {};
+  const saveItem = () => {
+    recordSensorData();
+    appendDate();
+    appendTime();
+    let updatedCollection = collection;
+    updatedCollection.items[collection.items.length] = newItem;
+    console.log(updatedCollection);
+    //save to disk
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -225,7 +260,7 @@ export default ({ route, navigation }) => {
       <Text>Barometer: {barometerData.pressure}</Text>
       <Text>Gyro: {gyroscopeData.x}</Text>
       <Text>Mag: {magnetometerData.x}</Text>
-      <Button title="record data" onPress={recordSensorData} />
+      <Button title="record data" onPress={saveItem} />
     </SafeAreaView>
   );
 };
