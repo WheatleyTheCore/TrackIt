@@ -1,10 +1,35 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const storeData = async (value: string) => {
+  try {
+    await AsyncStorage.setItem('testing', value)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+
+const getData = async (setData) => {
+  try {
+    const value = await AsyncStorage.getItem('testing')
+    if(value !== null) {
+      setData(value)
+    }
+  } catch(e) {
+    // error reading value
+    console.log(e)
+  }
+}
+
+
 
 function HomeScreen({navigation}) {
+  
+  storeData('some test data')
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home!</Text>
@@ -18,9 +43,13 @@ function HomeScreen({navigation}) {
 }
 
 function SettingsScreen() {
+  let [storedData, setStoredData] = React.useState()
+  getData(setStoredData)
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings!</Text>
+      <Text>We loaded {storedData} from storage</Text>
     </View>
   );
 }
