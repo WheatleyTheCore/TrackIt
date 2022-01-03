@@ -1,14 +1,31 @@
 import React, {useState, useEffect} from 'react'
 import {View, SafeAreaView, Text} from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
+
+import {loadAllCollectionNames} from '../utils/storageUtils'
 
 export default ({navigation}) => {
+
+    const [collectionNames, setCollectionNames] = useState([])
+    const [didLoadCollectionNames, setDidLoadCollectionNames] = useState(false)
+
+    useEffect(() => {
+        if (!didLoadCollectionNames) {
+            loadAllCollectionNames(setCollectionNames)
+            setDidLoadCollectionNames(true)
+        }
+    }, [didLoadCollectionNames])
+
     return (
-        <View>
-            <Text>The home page goes here</Text>
-            <TouchableOpacity onPress={() => {
-                navigation.navigate("Settings")
-            }}><Text>Next!</Text></TouchableOpacity>
-        </View>
+        <SafeAreaView>
+            <FlatList
+            data={collectionNames}
+            renderItem={({item, index}) => {
+                return (
+                    <Text key={index.toString()}>{item}</Text>
+                )
+            }}
+            />
+        </SafeAreaView>
     )
 }

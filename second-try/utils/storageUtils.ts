@@ -26,7 +26,7 @@ export async function loadData (setData: (data: string) => void, storage_key: st
 
 /*---------------------------------------------------collection functions---------------------------------------*/
 
-export async function loadAllCollectionNames (setCollectionNames: (keys: string[]) => void): Promise<void> {
+export async function loadAllCollectionNames (setCollectionNames: (keys: string[]) => any): Promise<void> {
     try {
         const keys = await AsyncStorage.getAllKeys();
         setCollectionNames(keys);
