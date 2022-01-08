@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {View, SafeAreaView, Text} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 
-import {loadAllCollectionNames} from '../utils/storageUtils'
+import {loadAllCollectionNames} from '../DataMgmt/storageUtils'
+import useCollectionList from '../DataMgmt/collectionListHook'
 
 export default ({navigation}) => {
 

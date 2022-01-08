@@ -90,10 +90,10 @@ const styles = StyleSheet.create({
   addButton: {
     transform: [
       {
-        translateX: "100",
+        translateX: 100,
       },
       {
-        translateY: "-45%",
+        translateY: -45,
       },
     ],
   },
