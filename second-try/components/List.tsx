@@ -1,8 +1,18 @@
 import React, { useState } from "react"
-import {Text} from 'react-native'
+import {Text, FlatList} from 'react-native'
+import ListItem from './ListItem'
 
-export default () =>  {
+//TODO add interface for this one
+
+export default (props:any) =>  {
     return (
-        <Text>adsf</Text>
+        <FlatList data={props.listData} renderItem={({index, item}) => {
+            return (
+            <ListItem index={index} key={index}
+            item={item} 
+            clickHandler={() => console.log("clickhandler ran!")} 
+            deleteFunction={() => console.log("delete function ran!")} />
+            )
+        }} />
     )
 }

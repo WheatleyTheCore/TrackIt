@@ -13,13 +13,20 @@ import Icon from "react-native-vector-icons/EvilIcons";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export default ({ navigation, collection, deleteCollection }) => {
+interface ListItemProps {
+  index: number;
+  item: string;
+  clickHandler: (address: string, dataObject?: object) => void;
+  deleteFunction: (item: string) => void;
+}
+
+export default (props:ListItemProps) => {
   const rightSwipe = (progress, dragX) => {
     return (
       <TouchableOpacity
         style={styles.delete}
         onPress={() => {
-          deleteCollection();
+          console.log("Delete function ran!");
         }}
       >
         <Icon name="trash" color="white" size={30} />
@@ -28,14 +35,14 @@ export default ({ navigation, collection, deleteCollection }) => {
   };
 
   return (
-    <Swipeable renderRightActions={rightSwipe} key={collection}>
+    <Swipeable renderRightActions={rightSwipe} key={props.index.toString()}>
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
-          navigation.navigate("AddItem", { collectionTitle: collection });
+          props.clickHandler("AddItem", { title: props.item });
         }}
       >
-        <Text>{collection}</Text>
+        <Text>{props.item}</Text>
       </TouchableOpacity>
     </Swipeable>
   );

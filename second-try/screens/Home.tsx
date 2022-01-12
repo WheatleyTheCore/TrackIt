@@ -4,29 +4,23 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 
 import {loadAllCollectionNames} from '../DataMgmt/storageUtils'
 import useCollectionList from '../DataMgmt/collectionListHook'
+import List from '../components/List'
 
 export default ({navigation}) => {
 
     const [collectionNames, setCollectionNames] = useState([])
     const [didLoadCollectionNames, setDidLoadCollectionNames] = useState(false)
 
-    useEffect(() => {
-        if (!didLoadCollectionNames) {
-            loadAllCollectionNames(setCollectionNames)
-            setDidLoadCollectionNames(true)
-        }
-    }, [didLoadCollectionNames])
+    // useEffect(() => {
+    //     if (!didLoadCollectionNames) {
+    //         loadAllCollectionNames(setCollectionNames)
+    //         setDidLoadCollectionNames(true)
+    //     }
+    // }, [didLoadCollectionNames])
 
     return (
         <SafeAreaView>
-            <FlatList
-            data={collectionNames}
-            renderItem={({item, index}) => {
-                return (
-                    <Text key={index.toString()}>{item}</Text>
-                )
-            }}
-            />
+            <List listData={['asdf', 'sdfgh', 'asdf']} />
         </SafeAreaView>
     )
 }
