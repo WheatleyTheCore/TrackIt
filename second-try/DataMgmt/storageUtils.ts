@@ -38,7 +38,8 @@ export async function loadAllCollectionNames (setCollectionNames: (keys: string[
       }
 }
 
-export async function saveCollection (collection: object, storage_key: string): Promise<void> {
+//This is used for both creating new collections and updating old ones.
+export async function saveCollection (collection: object, storage_key: string): Promise<void> { 
   const stringifiedData = JSON.stringify(collection)
   try {
     await AsyncStorage.setItem(storage_key, stringifiedData);
