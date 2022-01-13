@@ -32,7 +32,7 @@ export async function loadData (setData: (data: string) => void, storage_key: st
 export async function loadAllCollectionNames (setCollectionNames: (keys: string[]) => any): Promise<void> {
     try {
         const keys = await AsyncStorage.getAllKeys();
-        setCollectionList(keys)
+        setCollectionNames(keys)
       } catch (e) {
         console.log(e);
       }
