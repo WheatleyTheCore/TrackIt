@@ -1,15 +1,18 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {View, SafeAreaView, Text} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 
 import {loadAllCollectionNames} from '../DataMgmt/storageUtils'
 import useCollectionList from '../DataMgmt/collectionListHook'
 import List from '../components/List'
+import { AppDataContext } from '../DataMgmt/AppDataContext'
 
 export default ({navigation}) => {
 
-    const [collectionNames, setCollectionNames] = useState([])
+    const [collectionNames, setCollectionNames] = useState<string[]>([])
     const [didLoadCollectionNames, setDidLoadCollectionNames] = useState(false)
+    
+    setCollectionNames(AppDataContext.collectionNames)
 
     // useEffect(() => {
     //     if (!didLoadCollectionNames) {
@@ -20,7 +23,7 @@ export default ({navigation}) => {
 
     return (
         <SafeAreaView>
-            <List listData={['asdf', 'sdfgh', 'asdf']} />
+            <List listData={collectionNames} />
         </SafeAreaView>
     )
 }

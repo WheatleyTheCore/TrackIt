@@ -7,6 +7,16 @@ interface Collection {
     entries: Entry[];
 }
 
+interface AppContextInterface {
+    collectionNames: string[];
+    setCollectionNames: any;
+    currentCollection: any;
+    setCurrentCollection: any;
+    saveCollection: any;
+    removeCollection: any;
+    removeEntry: any;
+}
+
 type Entry = {
     ID: string;
     [propName: string]: any;
@@ -18,10 +28,10 @@ const defaultCollection: Collection = {
     entries: []
 }
 
-const AppDataContext = createContext({})
+export const AppDataContext = createContext<AppContextInterface | null>(null)
 
 export const AppDataContextProvider = (props: any): ReactElement => {
-    const [collectionNames, setCollectionNames] = useState<string[]>([])
+    const [collectionNames, setCollectionNames] = useState<string[]>(['asdf'])
     const [currentCollection, setCurrentCollection] = useState<Collection>(defaultCollection)
 
     const saveCollection = (collectionToSave: Collection, collectionName: any) => {
