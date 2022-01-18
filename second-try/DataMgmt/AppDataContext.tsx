@@ -1,5 +1,7 @@
 import { createContext, ReactElement, useState } from "react";
-import {loadAllCollectionNames, saveCollection as saveCollectionToDisk, deleteCollection} from './storageUtils'
+import {loadAllCollectionNames, saveCollection as saveCollectionToDisk, deleteCollection as deleteCollectionFromDisk} from './storageUtils'
+
+
 
 interface Collection {
     entrySchema: Object;
@@ -44,7 +46,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
     }
 
     const removeCollection = async (collectionName: string) => {
-        deleteCollection(collectionName)
+        deleteCollectionFromDisk(collectionName)
         let updatedNameList = collectionNames.filter(name => name != collectionName)
         setCollectionNames(updatedNameList)
     }

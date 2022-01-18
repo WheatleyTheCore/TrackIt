@@ -17,16 +17,17 @@ interface ListItemProps {
   index: number;
   item: string;
   clickHandler: (address: string, dataObject?: object) => void;
-  deleteFunction: (item: string) => void;
+  deleteHandler: (item: string) => void;
 }
 
 export default (props:ListItemProps) => {
-  const rightSwipe = (progress, dragX) => {
+  const rightSwipe = (progress:any, dragX:any) => {
     return (
       <TouchableOpacity
         style={styles.delete}
         onPress={() => {
           console.log("Delete function ran!");
+          props.deleteHandler(props.item)
         }}
       >
         <Icon name="trash" color="white" size={30} />
@@ -39,7 +40,7 @@ export default (props:ListItemProps) => {
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
-          props.clickHandler("AddItem", { title: props.item });
+          props.clickHandler("AddCollection", { title: props.item });
         }}
       >
         <Text>{props.item}</Text>

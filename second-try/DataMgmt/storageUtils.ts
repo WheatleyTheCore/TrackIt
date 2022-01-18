@@ -1,7 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import useCollectionList from "./collectionListHook";
 
-const [collectionList, setCollectionList] = useCollectionList()
 
 /*---------------------------------------------------low level access functions---------------------------------------*/
 
@@ -29,12 +27,13 @@ export async function loadData (setData: (data: string) => void, storage_key: st
 
 /*---------------------------------------------------collection functions---------------------------------------*/
 
-export async function loadAllCollectionNames (setCollectionNames: (keys: string[]) => any): Promise<void> {
+export async function loadAllCollectionNames (): Promise<string[]> {
     try {
         const keys = await AsyncStorage.getAllKeys();
-        setCollectionNames(keys)
+        return keys
       } catch (e) {
         console.log(e);
+        return []
       }
 }
 
