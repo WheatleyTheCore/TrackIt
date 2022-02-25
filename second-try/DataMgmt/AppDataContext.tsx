@@ -1,17 +1,19 @@
 import { createContext, ReactElement, useState } from "react";
 import {loadAllCollectionNames, saveCollection as saveCollectionToDisk, deleteCollection as deleteCollectionFromDisk} from './storageUtils'
+import * as SQLite from 'expo-sqlite'
+import { Button } from "react-native";
 
 
-
-interface Collection {
+interface CollectionInterface {
+    name: String;
     entrySchema: Object;
-    notes?: String;
     entries: Entry[];
 }
 
 interface AppContextInterface {
     collectionNames: string[];
     setCollectionNames: any;
+    collectionFactory: any;
     currentCollection: any;
     setCurrentCollection: any;
     saveCollection: any;
@@ -19,14 +21,19 @@ interface AppContextInterface {
     removeEntry: any;
 }
 
+type Collection = {
+    name: string;
+    entrySchema: Object;
+    entries: Entry[];
+}
+
 type Entry = {
-    ID: string;
     [propName: string]: any;
 }
 
-const defaultCollection: Collection = {
+const defaultCollection: CollectionInterface = {
+    name: "",
     entrySchema: {},
-    notes:"",
     entries: []
 }
 
@@ -34,15 +41,57 @@ export const AppDataContext = createContext<AppContextInterface | null>(null)
 
 export const AppDataContextProvider = (props: any): ReactElement => {
     const [collectionNames, setCollectionNames] = useState<string[]>(['asdf'])
-    const [currentCollection, setCurrentCollection] = useState<Collection>(defaultCollection)
+    const [currentCollection, setCurrentCollection] = useState<Collection>(props.defaultCollection)
+    const [collections, setCollections] = useState<Collection[]>([]);
 
-    const saveCollection = (collectionToSave: Collection, collectionName: any) => {
-        const tempCollectionNames: string[] = [...collectionNames]
-        if (!(tempCollectionNames.indexOf(collectionName))) {
-            setCollectionNames([...tempCollectionNames, collectionName])
-        }
+    const database = SQLite.openDatabase('db.db');
 
-        saveCollectionToDisk(collectionToSave, collectionName)
+    //create table for collections (TODO abstract into setup function)
+    database.transaction(tx => {
+        tx.executeSql('drop table if exists collections')
+        tx.executeSql('create table if not exists collections (id integer primary key autoincrement, name text unique, entry_schema text, entries text)')
+    })
+
+    const loadAllCollections = () => {
+        let collections = [];
+    }
+
+    const createCollection = (collectionToSave: Collection) => {
+        let name = collectionToSave.name;
+        let entrySchema = JSON.stringify(collectionToSave.entrySchema);
+        let entries = JSON.stringify([]);
+
+        database.transaction(tx => {
+            tx.executeSql("insert into collections (name, entry_schema, entries) values (?, ?, ?)", [name, entrySchema, entries], () => {
+                //direct user to the collection page
+            }, (_, err)=>{
+                console.log(err)
+            })
+        })
+    }
+
+    const updateCollection = (collectionToSave: Collection, name: string) => {
+        let updatedName = collectionToSave.name;
+        let updatedEntrySchema = JSON.stringify(collectionToSave.entrySchema);
+        let updatedEntries = JSON.stringify([]);
+
+        database.transaction(tx => {
+            tx.executeSql("update collections set name = ?, entry_schema = ?, entries = ?  where name = ?", [updatedName, updatedEntrySchema, updatedEntries, name], () => {
+                //direct user to the collection page
+            }, (_, err)=>{
+                console.log(err)
+            })
+        })
+    }
+
+    const deleteCollection = (name: string) => {
+        database.transaction(tx => {
+            tx.executeSql("delete from collections where name = ?", [name], () => {
+                //direct user to the collection page
+            }, (_, err)=>{
+                console.log(err)
+            })
+        })
     }
 
     const removeCollection = async (collectionName: string) => {
@@ -63,17 +112,57 @@ export const AppDataContextProvider = (props: any): ReactElement => {
         saveEntries(updatedEntries)
     }
 
+    const collectionFactory = () => {
+        let newCollection = new Object(defaultCollection)
+        return newCollection
+    }
+    
+
     return (
         <AppDataContext.Provider value={{
-            collectionNames,
-            setCollectionNames,
-            currentCollection,
-            setCurrentCollection,
-            saveCollection,
-            removeCollection,
-            removeEntry
+            // collectionNames,
+            // setCollectionNames,
+            // collectionFactory,
+            // currentCollection,
+            // setCurrentCollection,
+            // saveCollection,
+            // removeCollection,
+            // removeEntry
         }}>
             {props.children}
+            <Button onPress={() => {
+                let collection = {
+                    name: 'test collection',
+                    entrySchema: {
+                        time: 'number',
+                        place: 'text'
+                    },
+                    entries: []
+                }
+                createCollection(collection);
+            }} title="add some data" />
+            <Button onPress={() => {
+                let collection = {
+                    name: 'updated!',
+                    entrySchema: {
+                        time: 'AAAAA',
+                        place: 'EEEEEEE'
+                    },
+                    entries: []
+                }
+                updateCollection(collection, 'test collection');
+            }} title="update some data" />
+            <Button onPress={() => {
+                deleteCollection('test collection');
+            }} title="delete row" />
+            <Button onPress={() => {
+                database.transaction(tx => {
+                    tx.executeSql("select * from collections", [], (_, data) => {
+                        console.log("-------------data from db------------")
+                        console.log(data)
+                    })
+                })
+            }} title="read some data" />
         </AppDataContext.Provider>
     )
 }

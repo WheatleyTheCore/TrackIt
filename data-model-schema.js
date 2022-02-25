@@ -1,6 +1,7 @@
-//collections' names are stored as the key for their storage object (i.e. in AsyncStorage lib the key for the collection's data is the collection's name)
-
+//----------------------old-------------------
 collection: {
+    key: "" //uuid
+    name: "" //collection name
     entrySchema: {
         //dehydrated version of an entry.
     }
@@ -10,3 +11,10 @@ collection: {
      //each entry must contain an ID
     ]
 }
+
+//----------------------new-----------------------
+
+/**
+ *  |id (int autoincrement)|name (text)|entry_schema (text or blob)|entries (text or blob)|
+ *  | 1                    | example   | {name: string, num: int}  |[entry 1, entry 2]    |          
+ */

@@ -1,10 +1,14 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useContext} from 'react'
 import {View, SafeAreaView, Text} from 'react-native'
+import { AppDataContext } from '../DataMgmt/AppDataContext'
 
-export default ({navigation}) => {
+
+export default () => {
+    const context = useContext(AppDataContext)
+
     return (
         <View>
-            <Text>Creating new collections happens here</Text>
+            <Text>{JSON.stringify(context?.currentCollection)}</Text>
         </View>
     )
 }

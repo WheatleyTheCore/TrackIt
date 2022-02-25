@@ -27,10 +27,19 @@ export async function loadData (setData: (data: string) => void, storage_key: st
 
 /*---------------------------------------------------collection functions---------------------------------------*/
 
+//Collection names are no longer the names. 
 export async function loadAllCollectionNames (): Promise<string[]> {
+  let collectionNames = []
     try {
         const keys = await AsyncStorage.getAllKeys();
-        return keys
+        keys.forEach(async (key) => {
+          const val = await AsyncStorage.getItem(key);
+          if (val !== null) {
+            const data = JSON.parse(val);
+            collectionNames.push(data.name);
+          }
+        })
+        return keys;
       } catch (e) {
         console.log(e);
         return []
@@ -55,7 +64,10 @@ export async function deleteCollection (collection_key: string): Promise<void> {
     }
 }
 
+
 /*---------------------------------------------------settings functions---------------------------------------*/
+
+//TODO THE KEYS ARE NO LONGER THE NAME OF THE COLLECTION, THESE WILL PROBABLY NO LONGER WORK.
 
 export async function loadSettings (setSettings: (settings: string) => void):Promise<void> {
   try {
