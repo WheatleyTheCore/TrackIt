@@ -40,7 +40,7 @@ export default (props:ListItemProps) => {
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
-          props.clickHandler("AddCollection", { title: props.item });
+          props.clickHandler("ViewGraphedCollectionData", { collectionName: props.item });
         }}
       >
         <Text>{props.item}</Text>

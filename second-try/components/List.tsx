@@ -11,7 +11,7 @@ interface PropInterface {
 
 export default (props: PropInterface) =>  {
     return (
-        <FlatList data={props.listData} renderItem={({index, item}) => {
+        <FlatList data={props.listData} keyExtractor={item => item} renderItem={({index, item}) => {
             return (
             <ListItem index={index} key={index}
                 item={item} 

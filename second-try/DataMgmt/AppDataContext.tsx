@@ -76,6 +76,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
         database.transaction(tx => {
             tx.executeSql("insert into collections (name, entry_schema, entries) values (?, ?, ?)", [name, entrySchema, entries], () => {
                 //direct user to the collection page
+                getAllCollectionNames() //update collection list
             }, (_, err)=>{
                 console.log(err)
             })
@@ -91,6 +92,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
         database.transaction(tx => {
             tx.executeSql("update collections set name = ?, entry_schema = ?, entries = ?  where name = ?", [updatedName, updatedEntrySchema, updatedEntries, name], () => {
                 //direct user to the collection page
+                getAllCollectionNames() //update collection list
             }, (_, err)=>{
                 console.log(err)
             })
@@ -101,6 +103,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
         database.transaction(tx => {
             tx.executeSql("delete from collections where name = ?", [name], () => {
                 //direct user to the collection page
+                getAllCollectionNames() //update collection list
             }, (_, err)=>{
                 console.log(err)
             })
@@ -158,14 +161,17 @@ export const AppDataContextProvider = (props: any): ReactElement => {
 
     return (
         <AppDataContext.Provider value={{
-            // collectionNames,
-            // setCollectionNames,
-            // collectionFactory,
-            // currentCollection,
-            // setCurrentCollection,
-            // saveCollection,
-            // removeCollection,
-            // removeEntry
+            collectionNames,
+            getAllCollectionNames,
+            collectionFactory,
+            currentCollection,
+            setCurrentCollection,
+            createCollection,
+            updateCollection,
+            deleteCollection,
+            addEntry,
+            updateEntry,
+            deleteEntry
         }}>
             {props.children}
             <Button onPress={() => {
@@ -221,9 +227,6 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                     entries: []
                 }
                 createCollection(collection3);
-
-                getAllCollectionNames()
-                console.log(collectionNames)
             }} title="test the function!" />
         </AppDataContext.Provider>
     )
