@@ -19,8 +19,11 @@ export default ({navigation}:any) => {
     }
 
     const createNewCollectionHandler = (): void => {
-        context.currentCollection = context.collectionFactory();
         navigation.navigate("AddCollection")
+    }
+
+    const newItemHandler = (): void => {
+        navigation.navigate("AddEntry")
     }
     
 
@@ -36,6 +39,8 @@ export default ({navigation}:any) => {
         <SafeAreaView>
             <List listData={context?.collectionNames} clickHandler={clickHandler} deleteHandler={context?.deleteCollection} />
             <Button title="create new collection" onPress={() => createNewCollectionHandler()} />
+            <Button title="add new item to current collection" onPress={() => newItemHandler()} />
+
         </SafeAreaView>
     )
 }

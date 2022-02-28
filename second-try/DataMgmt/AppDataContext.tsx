@@ -31,7 +31,7 @@ type Entry = {
     [propName: string]: any;
 }
 
-const defaultCollection: CollectionInterface = {
+const defaultCollection: Collection = {
     name: "",
     entrySchema: {},
     entries: []
@@ -41,18 +41,18 @@ export const AppDataContext = createContext<AppContextInterface | null>(null)
 
 export const AppDataContextProvider = (props: any): ReactElement => {
     const [collectionNames, setCollectionNames] = useState<string[]>([])
-    const [currentCollection, setCurrentCollection] = useState<Collection>(props.defaultCollection)
+    const [currentCollection, setCurrentCollection] = useState<Collection>()
     const [collections, setCollections] = useState<Collection[]>([]);
 
     const database = SQLite.openDatabase('db.db');
 
-    console.log(collectionNames)
+    //console.log(collectionNames)
 
     //create table for collections (TODO abstract into setup function)
-    database.transaction(tx => {
-        tx.executeSql('drop table if exists collections')
-        tx.executeSql('create table if not exists collections (id integer primary key autoincrement, name text unique, entry_schema text, entries text)')
-    })
+    // database.transaction(tx => {
+    //     tx.executeSql('drop table if exists collections')
+    //     tx.executeSql('create table if not exists collections (id integer primary key autoincrement, name text unique, entry_schema text, entries text)')
+    // })
 
     const getAllCollectionNames = () => {
         let collectionNames: string[] = [];
@@ -62,6 +62,21 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                     collectionNames.push(item['name'])
                 })
                 setCollectionNames(collectionNames)
+            }, (_, err)=>{
+                console.log(err)
+            })
+        })
+    }
+
+    const loadCurrentCollectionData = (collectionName: string) => {
+        database.transaction(tx => {
+            tx.executeSql("select * from collections where name = ?", [collectionName], (_, data) => {
+                let collectionData = collectionFactory()
+                collectionData.name = data.rows._array[0].name
+                collectionData.entrySchema = JSON.parse(data.rows._array[0].entry_schema)
+                collectionData.entries = JSON.parse(data.rows._array[0].entries)
+                setCurrentCollection(collectionData)
+
             }, (_, err)=>{
                 console.log(err)
             })
@@ -154,7 +169,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
     }
 
     const collectionFactory = () => {
-        let newCollection = new Object(defaultCollection)
+        let newCollection: Collection = new Object(defaultCollection)
         return newCollection
     }
     
@@ -186,6 +201,9 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                 createCollection(collection);
             }} title="add some data" />
             <Button onPress={() => {
+                loadCurrentCollectionData("test collection")
+            }} title="load test collection" />
+            {/* <Button onPress={() => {
                 let collection = {
                     name: 'updated!',
                     entrySchema: {
@@ -227,7 +245,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                     entries: []
                 }
                 createCollection(collection3);
-            }} title="test the function!" />
+            }} title="test the function!" /> */}
         </AppDataContext.Provider>
     )
 }
