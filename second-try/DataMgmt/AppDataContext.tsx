@@ -12,13 +12,16 @@ interface CollectionInterface {
 
 interface AppContextInterface {
     collectionNames: string[];
-    setCollectionNames: any;
+    getAllCollectionNames: any;
     collectionFactory: any;
     currentCollection: any;
-    setCurrentCollection: any;
-    saveCollection: any;
-    removeCollection: any;
-    removeEntry: any;
+    loadCurrentCollectionData: any;
+    createCollection: any;
+    updateCollection: any;
+    deleteCollection: any;
+    addEntry: any;
+    updateEntry: any;
+    deleteEntry: any;
 }
 
 type Collection = {
@@ -182,7 +185,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
             getAllCollectionNames,
             collectionFactory,
             currentCollection,
-            setCurrentCollection,
+            loadCurrentCollectionData,
             createCollection,
             updateCollection,
             deleteCollection,
@@ -203,7 +206,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                 createCollection(collection);
             }} title="add some data" />
             <Button onPress={() => {
-                loadCurrentCollectionData("test collection")
+                loadCurrentCollectionData("test")
             }} title="load test collection" />
             <Button onPress={() => {
                 let collection = {

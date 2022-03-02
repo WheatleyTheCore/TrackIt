@@ -38,7 +38,6 @@ export default () => {
 
     return (
         <View>
-            <Text>{JSON.stringify(context?.currentCollection)}</Text>
             <Text>{jsonSchema.title}</Text>
             <CreateCollectionForm entrySchema={schema} handleTypeChange={(type, index) => {
                 let previousSchema = {...schema}
@@ -53,7 +52,7 @@ export default () => {
                     schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.name == property))].value = data[property]
                 }
                 console.log(schemaCopy)
-                const newCollection = context?.collectionFactory('test', schemaCopy.Fields)
+                const newCollection = context?.collectionFactory('test 2', schemaCopy.Fields)
                 context?.createCollection(newCollection)
             }}
             handleDeleteField={index => {

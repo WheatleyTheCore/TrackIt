@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Swipeable, RectButton } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/EvilIcons";
+import { AppDataContext } from "../DataMgmt/AppDataContext";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -21,6 +22,9 @@ interface ListItemProps {
 }
 
 export default (props:ListItemProps) => {
+
+  const context = useContext(AppDataContext)
+
   const rightSwipe = (progress:any, dragX:any) => {
     return (
       <TouchableOpacity
@@ -40,7 +44,9 @@ export default (props:ListItemProps) => {
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
-          props.clickHandler("ViewGraphedCollectionData", { collectionName: props.item });
+          context?.loadCurrentCollectionData(props.item)
+          props.clickHandler("AddEntry", { collectionName: props.item });
+          
         }}
       >
         <Text>{props.item}</Text>

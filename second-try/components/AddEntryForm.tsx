@@ -4,19 +4,18 @@ import { useForm, Controller } from "react-hook-form";
 import {Picker} from '@react-native-picker/picker';
 
 
-export default ({entrySchema, handleTypeChange}) => {
+export default ({entrySchema, handleSubmitForm}) => {
 
 
     const { control, handleSubmit, formState: { errors } } = useForm({});
       const onSubmit = data => {
-        console.log('--------------SUBMIT DATA----------------')
-        console.log(data)
+        handleSubmitForm(data)
       }
     
       return (
         <View>
           {
-            entrySchema.Fields.map((item, index) => {
+            entrySchema.map((item, index) => {
               return (
               <Controller
                 control={control}
@@ -25,7 +24,7 @@ export default ({entrySchema, handleTypeChange}) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <View>
-                    <Text>Attribute Title</Text>
+                    <Text>{item.name}</Text>
                   <TextInput
                     style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
                     onBlur={onBlur}
