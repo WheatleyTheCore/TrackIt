@@ -168,8 +168,10 @@ export const AppDataContextProvider = (props: any): ReactElement => {
         })
     }
 
-    const collectionFactory = () => {
+    const collectionFactory = (name: string, entrySchema: Object) => {
         let newCollection: Collection = new Object(defaultCollection)
+        newCollection.name = name
+        newCollection.entrySchema=entrySchema
         return newCollection
     }
     
@@ -203,7 +205,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
             <Button onPress={() => {
                 loadCurrentCollectionData("test collection")
             }} title="load test collection" />
-            {/* <Button onPress={() => {
+            <Button onPress={() => {
                 let collection = {
                     name: 'updated!',
                     entrySchema: {
@@ -215,37 +217,10 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                 updateCollection(collection, 'test collection');
             }} title="update some data" />
             <Button onPress={() => {
-                deleteCollection('test collection');
-            }} title="delete row" />
-            <Button onPress={() => {
-                let collection = {
-                    name: 'test collection',
-                    entrySchema: {
-                        time: 'number',
-                        place: 'text'
-                    },
-                    entries: []
-                }
-                createCollection(collection);
-                let collection2 = {
-                    name: 'test collection 2',
-                    entrySchema: {
-                        time: 'number',
-                        place: 'text'
-                    },
-                    entries: []
-                }
-                createCollection(collection2);
-                let collection3 = {
-                    name: 'test collection 3',
-                    entrySchema: {
-                        time: 'number',
-                        place: 'text'
-                    },
-                    entries: []
-                }
-                createCollection(collection3);
-            }} title="test the function!" /> */}
+                database.transaction(tx => {
+                    tx.executeSql('select * from collections', [], (_, data) => {console.log(data)})
+                })
+            }} title="LOG ALL THE DATA" />
         </AppDataContext.Provider>
     )
 }
