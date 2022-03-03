@@ -11,6 +11,8 @@ export default ({entrySchema, handleSubmitForm}) => {
       const onSubmit = data => {
         handleSubmitForm(data)
       }
+
+      //TODO if sensor data, display text "__ will be recorded when you hit submit" instead of input
     
       return (
         <View>
@@ -25,13 +27,15 @@ export default ({entrySchema, handleSubmitForm}) => {
                 render={({ field: { onChange, onBlur, value } }) => (
                     <View>
                     <Text>{item.name}</Text>
-                  <TextInput
+                  {(item.type == 'number' || item.type == 'text') ? <TextInput
                     style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
                     keyboardType={item.type == 'number' ? 'decimal-pad' : 'default'}
-                  />
+                  /> : 
+                  <Text>{`${item.type} data will be recorded on submit`}</Text>
+                  }
                   </View>
                 )}
                 name={item.name}

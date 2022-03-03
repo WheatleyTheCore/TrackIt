@@ -17,7 +17,7 @@ export default ({entrySchema, handleTypeChange, handleSubmitForm, handleDeleteFi
             entrySchema.Fields.map((item, index) => {
               return (
                 <View key={index} >
-                  {errors[item.name] && <Text style={{color: 'red'}}>This is required.</Text>}
+                  {errors[item.id] && <Text style={{color: 'red'}}>This is required.</Text>}
               <Controller
                 control={control}
                 rules={{
@@ -52,7 +52,7 @@ export default ({entrySchema, handleTypeChange, handleSubmitForm, handleDeleteFi
                 </Picker>
                   </View>
                 )}
-                name={item.name}
+                name={item.id}
               />
               
               </View>

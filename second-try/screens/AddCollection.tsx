@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {View, SafeAreaView, Text, Button} from 'react-native'
+import {View, SafeAreaView, Text, TextInput, Button} from 'react-native'
 import CreateCollectionForm from '../components/CreateCollectionForm'
 import { AppDataContext } from '../DataMgmt/AppDataContext'
 import uuid from 'react-native-uuid'
@@ -11,34 +11,30 @@ export default () => {
         title: 'Test Form',
         Fields: [
             {
-                name: uuid.v4() ,
+                id: uuid.v4(),
+                name: 'field 1',
                 type:'text',
-                value:'',
                 required:{
                     value:true,
                     message:'Employee First Name is required'
                 },
-                validation:function(val){
-                    return val.length >=5 || 'Min Length is 5';
-                }
-            },
-            {
-                name: uuid.v4() ,
-                type:'text',
-                value:'',
-                required:{
-                    value:true,
-                    message:'Employee Last Name is required'
-                },
+                // validation:function(val){
+                //     return val.length >=5 || 'Min Length is 5';
+                // }
             },
         ]
     };
 
     const [schema, setSchema] = useState(jsonSchema)
+    const [title, setTitle] = useState('title goes here')
 
     return (
         <View>
-            <Text>{jsonSchema.title}</Text>
+            <TextInput
+                style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
+                onChangeText={setTitle}
+                value={title}
+            />
             <CreateCollectionForm entrySchema={schema} handleTypeChange={(type, index) => {
                 let previousSchema = {...schema}
                 previousSchema.Fields[index].type = type
@@ -48,11 +44,13 @@ export default () => {
             handleSubmitForm={(data) => {
                 console.log('----------data from the collection screen--------')
                 let schemaCopy = {...schema}
+                //console.log(data)
                 for (const property in data) {
-                    schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.name == property))].value = data[property]
+                    //console.log(data[property])
+                    schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.id == property))].name = data[property]
                 }
                 console.log(schemaCopy)
-                const newCollection = context?.collectionFactory('test 2', schemaCopy.Fields)
+                const newCollection = context?.collectionFactory(title, schemaCopy.Fields)
                 context?.createCollection(newCollection)
             }}
             handleDeleteField={index => {
@@ -65,9 +63,9 @@ export default () => {
             <Button title="add field" onPress={() => {
                 let previousSchema = {...schema}
                 previousSchema.Fields.push({
-                    name: uuid.v4(),
+                    id: uuid.v4(),
+                    name: 'new attribute',
                     type:'text',
-                    title: JSON.stringify(previousSchema.Fields.length + 1),
                     required:{
                         value:true,
                         message:'Employee Last Name is required'

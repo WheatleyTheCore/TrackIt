@@ -12,8 +12,10 @@ export default ({navigation}) => {
     const [isLoading, setIsLoading] = useState(true)
 
     const { control, handleSubmit, formState: { errors } } = useForm({});
-      const onSubmit = data => {
-        console.log(data)
+      const onSubmit = (data: any) => {
+        //TODO have it use the entry name rather than the GUID
+        context?.addEntry(data)
+        navigation.navigate("ViewGraphedCollectionData")
       }
 
     useEffect(() => {

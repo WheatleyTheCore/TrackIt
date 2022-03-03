@@ -128,28 +128,28 @@ export const AppDataContextProvider = (props: any): ReactElement => {
         })
     }
 
-    const addEntry = (entry: Entry, collectionName: string) => {
+    const addEntry = (entry: Entry) => {
         database.transaction(tx => {
-            tx.executeSql("select entries from collections where name = ?", [collectionName], (t, data) => {
+            tx.executeSql("select entries from collections where name = ?", [currentCollection.name], (t, data) => {
                 let entryObject = data.rows._array[0]
                 let entryArray = JSON.parse(entryObject.entries)
                 entryArray.push(entry)
-                tx.executeSql('update collections set entries = ? where name = ?', [JSON.stringify(entryArray), collectionName])
+                tx.executeSql('update collections set entries = ? where name = ?', [JSON.stringify(entryArray), currentCollection.name])
             }, (_, err)=>{
                 console.log(err)
             })
         })
     }
 
-    const updateEntry = (entry: Entry, index: number, collectionName: string) => {
+    const updateEntry = (entry: Entry, index: number) => {
         database.transaction(tx => {
-            tx.executeSql("select entries from collections where name = ?", [collectionName], (t, data) => {
+            tx.executeSql("select entries from collections where name = ?", [currentCollection.name], (t, data) => {
                 let entryObject = data.rows._array[0]
                 let entryArray = JSON.parse(entryObject.entries)
                 if (index < entryArray.length) {
                     entryArray[index] = entry
                 }
-                tx.executeSql('update collections set entries = ? where name = ?', [JSON.stringify(entryArray), collectionName])
+                tx.executeSql('update collections set entries = ? where name = ?', [JSON.stringify(entryArray), currentCollection.name])
             }, (_, err)=>{
                 console.log(err)
             })
@@ -158,13 +158,13 @@ export const AppDataContextProvider = (props: any): ReactElement => {
 
     
 
-    const deleteEntry = (index: number, collectionName: string) => {
+    const deleteEntry = (index: number) => {
         database.transaction(tx => {
-            tx.executeSql("select entries from collections where name = ?", [collectionName], (t, data) => {
+            tx.executeSql("select entries from collections where name = ?", [currentCollection.name], (t, data) => {
                 let entryObject = data.rows._array[0]
                 let entryArray = JSON.parse(entryObject.entries)
                 entryArray.splice(index, 1)
-                tx.executeSql('update collections set entries = ? where name = ?', [JSON.stringify(entryArray), collectionName])
+                tx.executeSql('update collections set entries = ? where name = ?', [JSON.stringify(entryArray), currentCollection.name])
             }, (_, err)=>{
                 console.log(err)
             })
