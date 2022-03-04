@@ -1,10 +1,14 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {View, SafeAreaView, Text} from 'react-native'
+import { AppDataContext } from '../DataMgmt/AppDataContext'
 
 export default ({navigation}) => {
+
+    const context = useContext(AppDataContext)
+
     return (
         <View>
-            <Text>Raw data goes here</Text>
+            <Text>{JSON.stringify(context?.currentCollection.entries)}</Text>
         </View>
     )
 }

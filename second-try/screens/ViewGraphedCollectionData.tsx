@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {View, SafeAreaView, Text} from 'react-native'
+import {View, SafeAreaView, Text, Dimensions} from 'react-native'
 import { Picker } from '@react-native-picker/picker';
 import {
     LineChart,
@@ -20,6 +20,16 @@ export default ({navigation}) => {
     const [independentVar, setIndependentVar] = useState('')
 
     const context = useContext(AppDataContext)
+    
+
+    let chartData = {x: [], y: []}
+
+    context?.currentCollection.entries.map(i => {
+        chartData.x.push(i.x)
+        chartData.y.push(i.y)
+    })
+
+    console.log(chartData)
 
     //console.log(context?.currentCollection)
 
@@ -61,11 +71,46 @@ export default ({navigation}) => {
                     })}
                 </Picker>
 
-                
+
             </View>
             :
             null}
-            <Text>Graphed data goes here</Text>
+              <LineChart
+    data={{
+      labels: chartData.x,
+      datasets: [
+        {
+          data: chartData.y
+        }
+      ]
+    }}
+    width={Dimensions.get("window").width} // from react-native
+    height={220}
+    yAxisLabel="$"
+    yAxisSuffix="k"
+    yAxisInterval={1} // optional, defaults to 1
+    chartConfig={{
+      backgroundColor: "#e26a00",
+      backgroundGradientFrom: "#fb8c00",
+      backgroundGradientTo: "#ffa726",
+      decimalPlaces: 2, // optional, defaults to 2dp
+      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      style: {
+        borderRadius: 16
+      },
+      propsForDots: {
+        r: "6",
+        strokeWidth: "2",
+        stroke: "#ffa726"
+      }
+    }}
+    bezier
+    style={{
+      marginVertical: 8,
+      borderRadius: 16
+    }}
+  />
         </View>
     )
 }

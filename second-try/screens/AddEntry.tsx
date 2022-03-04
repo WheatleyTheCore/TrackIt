@@ -13,7 +13,7 @@ export default ({navigation}) => {
 
     const { control, handleSubmit, formState: { errors } } = useForm({});
       const onSubmit = (data: any) => {
-        //TODO have it use the entry name rather than the GUID
+        data['date_of_initial_submit'] = new Date().toLocaleString()
         context?.addEntry(data)
         navigation.navigate("ViewGraphedCollectionData")
       }
