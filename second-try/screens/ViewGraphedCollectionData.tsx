@@ -16,20 +16,25 @@ import { flingGestureHandlerProps } from 'react-native-gesture-handler/lib/types
 
 export default ({navigation}) => {
     const [chartType, setChartType] = useState('contribution')
-    const [dependentVar, setDependentVar] = useState('')
+    const [dependentVar, setDependentVar] = useState('') //have this be set automatically somehow
     const [independentVar, setIndependentVar] = useState('')
 
     const context = useContext(AppDataContext)
     
+    let entries = [...context?.currentCollection.entries]
+
+    // if (dependentVar in entries[0]) {
+    //   entries.sort((a: any, b: any) => a.x - b.x)
+    // }
 
     let chartData = {x: [], y: []}
 
-    context?.currentCollection.entries.map(i => {
+    entries.map(i => {
         chartData.x.push(i.x)
         chartData.y.push(i.y)
     })
 
-    console.log(chartData)
+    console.log(new Date(entries[0].datetime_of_initial_submit).toString())
 
     //console.log(context?.currentCollection)
 

@@ -28,6 +28,12 @@ export default () => {
     const [schema, setSchema] = useState(jsonSchema)
     const [title, setTitle] = useState('title goes here')
 
+    // const updateSchemaValue = (schema: object, property: string, value: any) => {
+    //     let schemaCopy = {...schema}
+    //     schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.id == property))].name = data[property]
+
+    // }
+
     return (
         <View>
             <TextInput
@@ -45,17 +51,23 @@ export default () => {
                 console.log('----------data from the collection screen--------')
                 let schemaCopy = {...schema}
                 //console.log(data)
-                for (const property in data) {
-                    //console.log(data[property])
-                    schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.id == property))].name = data[property]
+                for (const id in data) {
+                    //console.log(data[id])
+                    schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.id == id))].name = data[id]
                 }
                 console.log(schemaCopy)
                 const newCollection = context?.collectionFactory(title, schemaCopy.Fields)
                 context?.createCollection(newCollection)
             }}
-            handleDeleteField={index => {
+            handleDeleteField={(index: number, data: any) => {
                 console.log('==================deleting field================')
                 let schemaCopy = {...schema}
+
+                for (const id in data) {
+                    console.log(`id: ${id}`)
+                    schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.id == id))].name = data[id]
+                }
+
                 schemaCopy.Fields.splice(index, 1)
                 console.log(schemaCopy)
                 setSchema(schemaCopy)

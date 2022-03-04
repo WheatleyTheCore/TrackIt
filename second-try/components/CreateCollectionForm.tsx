@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Text, TextInput, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import {Picker} from '@react-native-picker/picker';
@@ -6,17 +6,21 @@ import {Picker} from '@react-native-picker/picker';
 export default ({entrySchema, handleTypeChange, handleSubmitForm, handleDeleteField}) => {
 
 
-    const { control, handleSubmit, formState: { errors } } = useForm({});
+    const { control, getValues, setValue, handleSubmit, formState: { errors } } = useForm({});
       const onSubmit = data => {
         handleSubmitForm(data)
       }
+
+      entrySchema.Fields.map(field => {
+        setValue(field.id, field.name)
+      })
     
       return (
         <View>
           {
             entrySchema.Fields.map((item, index) => {
               return (
-                <View key={index} >
+                <View key={item.id} >
                   {errors[item.id] && <Text style={{color: 'red'}}>This is required.</Text>}
               <Controller
                 control={control}
@@ -27,7 +31,8 @@ export default ({entrySchema, handleTypeChange, handleSubmitForm, handleDeleteFi
                   <View>
                     <Text>Attribute {index + 1} Title</Text>
                     <Button title={`delete attribute ${index + 1}`} onPress={() => {
-                      handleDeleteField(index)
+                      let currentValues = getValues()
+                      handleDeleteField(index, currentValues)
                     }} />
                   <TextInput
                     style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
