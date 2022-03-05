@@ -26,7 +26,7 @@ export default () => {
     };
 
     const [schema, setSchema] = useState(jsonSchema)
-    const [title, setTitle] = useState('title goes here')
+    const [title, setTitle] = useState('title')
 
     // const updateSchemaValue = (schema: object, property: string, value: any) => {
     //     let schemaCopy = {...schema}
@@ -41,37 +41,30 @@ export default () => {
                 onChangeText={setTitle}
                 value={title}
             />
-            <CreateCollectionForm entrySchema={schema} handleTypeChange={(type, index) => {
-                let previousSchema = {...schema}
-                previousSchema.Fields[index].type = type
-                console.log(previousSchema)
-                setSchema(previousSchema)
-            }}
-            handleSubmitForm={(data) => {
-                console.log('----------data from the collection screen--------')
-                let schemaCopy = {...schema}
-                //console.log(data)
-                for (const id in data) {
-                    //console.log(data[id])
-                    schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.id == id))].name = data[id]
-                }
-                console.log(schemaCopy)
-                const newCollection = context?.collectionFactory(title, schemaCopy.Fields)
-                context?.createCollection(newCollection)
-            }}
-            handleDeleteField={(index: number, data: any) => {
-                console.log('==================deleting field================')
-                let schemaCopy = {...schema}
+            <CreateCollectionForm entrySchema={schema} 
+                handleTypeChange={(type, index) => {
+                    let previousSchema = {...schema}
+                    previousSchema.Fields[index].type = type
+                    console.log(previousSchema)
+                    setSchema(previousSchema)
+                }}
+                handleNameChange={(updatedText: string, index: number) => {
+                    let previousSchema = {...schema}
+                    previousSchema.Fields[index].name = updatedText
+                    setSchema(previousSchema)
+                }}
+                handleSubmitForm={(data) => {
+                    console.log('----------data from the collection screen--------')
+                    const newCollection = context?.collectionFactory(title, schema.Fields)
+                    context?.createCollection(newCollection)
+                }}
+                handleDeleteField={(index: number) => {
+                    console.log('==================deleting field================')
+                    let schemaCopy = {...schema}
 
-                for (const id in data) {
-                    console.log(`id: ${id}`)
-                    schemaCopy.Fields[schemaCopy.Fields.indexOf(schemaCopy.Fields.find(element => element.id == id))].name = data[id]
-                }
-
-                schemaCopy.Fields.splice(index, 1)
-                console.log(schemaCopy)
-                setSchema(schemaCopy)
-            }} />
+                    schemaCopy.Fields.splice(index, 1)
+                    setSchema(schemaCopy)
+                }} />
             <Button title="add field" onPress={() => {
                 let previousSchema = {...schema}
                 previousSchema.Fields.push({
@@ -83,7 +76,6 @@ export default () => {
                         message:'Employee Last Name is required'
                     },
                 })
-                console.log(previousSchema)
                 setSchema(previousSchema)
             }} />
         </View>
