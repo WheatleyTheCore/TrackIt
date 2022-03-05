@@ -20,6 +20,7 @@ export default ({entrySchema, handleSubmitForm}) => {
             entrySchema.map((item, index) => {
               return (
               <Controller
+                key={item.id}
                 control={control}
                 rules={{
                  required: true,

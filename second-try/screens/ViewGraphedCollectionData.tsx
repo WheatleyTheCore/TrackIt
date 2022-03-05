@@ -11,21 +11,28 @@ import {
   } from "react-native-chart-kit";
 import { AppDataContext } from '../DataMgmt/AppDataContext';
 import { flingGestureHandlerProps } from 'react-native-gesture-handler/lib/typescript/handlers/FlingGestureHandler';
+import DynamicGraph from '../components/DynamicGraph';
 
 //this page only really works if there's numeric data, otherwise a contribution graph is the only thing that works.
 
 export default ({navigation}) => {
     const [chartType, setChartType] = useState('contribution')
-    const [dependentVar, setDependentVar] = useState('') //have this be set automatically somehow
-    const [independentVar, setIndependentVar] = useState('')
+    const [dependentVar, setDependentVar] = useState('x') //have this be set automatically somehow
+    const [independentVar, setIndependentVar] = useState('y')
 
     const context = useContext(AppDataContext)
     
-    let entries = [...context?.currentCollection.entries]
+    const [entries, setEntries] = useState([])
 
-    // if (dependentVar in entries[0]) {
-    //   entries.sort((a: any, b: any) => a.x - b.x)
-    // }
+    useEffect(() => {
+      if(context?.currentCollection != undefined) {
+          setEntries([...context?.currentCollection.entries])
+          setTimeout(() => {
+              setEntries([...context?.currentCollection.entries]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
+          }, 10)
+      }
+      
+  }, [context?.currentCollection])
 
     let chartData = {x: [], y: []}
 
@@ -34,9 +41,39 @@ export default ({navigation}) => {
         chartData.y.push(i.y)
     })
 
-    console.log(new Date(entries[0].datetime_of_initial_submit).toString())
+    //TODO update contribution map to update count for commits on same day
+    // const getSubmissionDateData = () => {
+    //   let data = []
+    //   entries.map((entry: any) => {
+    //     let entryObect = {}
+    //     entryObect.date = entry.datetime_of_initial_submit
+    //     entryObect.count = 1
+    //     data.push(entryObect)
+    //   })
+    //   return data
+    // }
 
-    //console.log(context?.currentCollection)
+    const getLablels = () => {
+      const labels = []
+      entries.map(entry => {
+        labels.push(entry[dependentVar])
+      })
+      console.log(`labels: ${labels}`)
+      return labels
+    }
+
+    const getData = () => {
+      const data = []
+      entries.map(entry => {
+        data.push(entry[independentVar])
+      })
+      console.log(`data: ${data}`)
+      return data
+    }
+
+    // console.log(new Date(entries[0].datetime_of_initial_submit).toString())
+
+    // console.log(context?.currentCollection)
 
     return (
         <View>
@@ -80,42 +117,10 @@ export default ({navigation}) => {
             </View>
             :
             null}
-              <LineChart
-    data={{
-      labels: chartData.x,
-      datasets: [
-        {
-          data: chartData.y
-        }
-      ]
-    }}
-    width={Dimensions.get("window").width} // from react-native
-    height={220}
-    yAxisLabel="$"
-    yAxisSuffix="k"
-    yAxisInterval={1} // optional, defaults to 1
-    chartConfig={{
-      backgroundColor: "#e26a00",
-      backgroundGradientFrom: "#fb8c00",
-      backgroundGradientTo: "#ffa726",
-      decimalPlaces: 2, // optional, defaults to 2dp
-      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      style: {
-        borderRadius: 16
-      },
-      propsForDots: {
-        r: "6",
-        strokeWidth: "2",
-        stroke: "#ffa726"
-      }
-    }}
-    bezier
-    style={{
-      marginVertical: 8,
-      borderRadius: 16
-    }}
-  />
+              <DynamicGraph chartType='line' dataObject={{
+                labels: getLablels(),
+                data: getData()
+              }} />
         </View>
     )
 }

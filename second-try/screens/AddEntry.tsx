@@ -9,11 +9,11 @@ import { AppDataContext } from '../DataMgmt/AppDataContext'
 
 export default ({navigation}) => {
 
-    setTimeout(() => {
-        setSchema(context?.currentCollection.entrySchema) //wait for context to update before setting the data. This is a hack, and will (hopefully) be fixed later
-    }, 5)
-
     const context = useContext(AppDataContext)
+
+    //TODO replace all of the useForm stuff
+
+    
     const [isLoading, setIsLoading] = useState(true)
     const [schema, setSchema] = useState({})
 
@@ -24,14 +24,18 @@ export default ({navigation}) => {
         context?.addEntry(data)
         navigation.navigate("ViewGraphedCollectionData")
       }
-
+      
     useEffect(() => {
         if(context?.currentCollection != undefined) {
             setIsLoading(false)
             setSchema(context?.currentCollection.entrySchema)
+            setTimeout(() => {
+                setSchema(context?.currentCollection.entrySchema) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
+            }, 10)
         }
 
         
+    
         
 
         
@@ -40,7 +44,7 @@ export default ({navigation}) => {
     if (isLoading) return <Text>Loading....</Text>
 
 
-    console.log(context?.currentCollection)
+    //console.log(context?.currentCollection)
 
     
 
