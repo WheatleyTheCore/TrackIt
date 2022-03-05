@@ -15,7 +15,7 @@ export default ({navigation}) => {
         setTimeout(() => {
             setEntries([...context?.currentCollection.entries]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
             setIsLoading(false)
-        }, 60)
+        }, 100)
       
   }, [isLoading])
 
@@ -40,15 +40,15 @@ export default ({navigation}) => {
                 let entryDate = new Date(entry.datetime_of_initial_submit).toLocaleDateString()
                 return (
                     <EntryListItem 
+                    key={index}
                     item={entryDate} 
                     index={index} 
                     deleteHandler={(index) => {
-                        context?.deleteEntry(index)
+                        context?.deleteEntry(entry.datetime_of_initial_submit)
                         setTimeout(() => {
-                            setEntries([[...context?.currentCollection.entries]]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
-                            console.log([[...context?.currentCollection.entries]]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
-
-                        }, 1000)
+                            //console.log('updating state!')
+                            setEntries([...context?.currentCollection.entries]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
+                        }, 100) //not triggering update... for some reason
                     }}
                     clickHandler={clickHandler}
                     />

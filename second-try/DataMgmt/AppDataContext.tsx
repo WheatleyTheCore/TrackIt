@@ -139,6 +139,8 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                 console.log(err)
             })
         })
+        loadCurrentCollectionData(currentCollection?.name)
+
     }
 
     const updateEntry = (entry: Entry, index: number) => {
@@ -154,20 +156,25 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                 console.log(err)
             })
         })
+        loadCurrentCollectionData(currentCollection?.name)
     }
 
     
 
-    const deleteEntry = (index: number) => {
+    const deleteEntry = (dateTime: string) => {
         database.transaction(tx => {
             tx.executeSql("select entries from collections where name = ?", [currentCollection.name], (t, data) => {
                 let entryObject = data.rows._array[0]
                 let entryArray = JSON.parse(entryObject.entries)
-                entryArray.splice(index, 1)
+                let EntryToDelete = entryArray.find(entry => entry.datetime_of_initial_submit == dateTime)
+                console.log(EntryToDelete)
+                let indexOfEntryToDelete = entryArray.indexOf(EntryToDelete)
+                entryArray.splice(indexOfEntryToDelete, 1)
                 tx.executeSql('update collections set entries = ? where name = ?', [JSON.stringify(entryArray), currentCollection.name])
             }, (_, err)=>{
                 console.log(err)
             })
+            loadCurrentCollectionData(currentCollection?.name)
         })
     }
 
