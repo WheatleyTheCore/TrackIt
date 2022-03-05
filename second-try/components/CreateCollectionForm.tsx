@@ -19,6 +19,7 @@ export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitFo
                     style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
                     onChangeText={(text: string) => handleNameChange(text, index)}
                     value={item.name}
+                    placeholder="attribute name"
                   />
                   <Text>Attribute {index + 1} Type</Text>
                   <Picker

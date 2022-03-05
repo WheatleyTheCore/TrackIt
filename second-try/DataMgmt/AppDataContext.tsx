@@ -194,7 +194,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
             deleteEntry
         }}>
             {props.children}
-            <Button onPress={() => {
+            {/* <Button onPress={() => {
                 let collection = {
                     name: 'test collection',
                     entrySchema: {
@@ -223,7 +223,7 @@ export const AppDataContextProvider = (props: any): ReactElement => {
                 database.transaction(tx => {
                     tx.executeSql('select * from collections', [], (_, data) => {console.log(data)})
                 })
-            }} title="LOG ALL THE DATA" />
+            }} title="LOG ALL THE DATA" /> */}
         </AppDataContext.Provider>
     )
 }

@@ -12,7 +12,7 @@ export default () => {
         Fields: [
             {
                 id: uuid.v4(),
-                name: 'field 1',
+                name: '',
                 type:'text',
                 required:{
                     value:true,
@@ -26,7 +26,7 @@ export default () => {
     };
 
     const [schema, setSchema] = useState(jsonSchema)
-    const [title, setTitle] = useState('title')
+    const [title, setTitle] = useState('')
 
     // const updateSchemaValue = (schema: object, property: string, value: any) => {
     //     let schemaCopy = {...schema}
@@ -40,6 +40,7 @@ export default () => {
                 style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
                 onChangeText={setTitle}
                 value={title}
+                placeholder="collection title"
             />
             <CreateCollectionForm entrySchema={schema} 
                 handleTypeChange={(type, index) => {
@@ -69,7 +70,7 @@ export default () => {
                 let previousSchema = {...schema}
                 previousSchema.Fields.push({
                     id: uuid.v4(),
-                    name: 'new attribute',
+                    name: '',
                     type:'text',
                     required:{
                         value:true,

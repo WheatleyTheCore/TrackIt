@@ -22,7 +22,8 @@ export default ({navigation}) => {
       const onSubmit = (data: any) => {
         data['datetime_of_initial_submit'] = new Date()
         context?.addEntry(data)
-        navigation.navigate("ViewGraphedCollectionData")
+        context?.loadCurrentCollectionData(context.currentCollection.name)
+        navigation.navigate("ViewRawCollectionData")
       }
       
     useEffect(() => {
