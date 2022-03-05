@@ -18,14 +18,8 @@ export default ({route, navigation}) => {
             setSchema(context?.currentCollection.entrySchema)
             setTimeout(() => {
                 setSchema(context?.currentCollection.entrySchema) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
-            }, 10)
+            }, 100)
         }
-
-        
-    
-        
-
-        
     }, [context?.currentCollection, isLoading])
 
     if (isLoading) return <Text>Loading....</Text>

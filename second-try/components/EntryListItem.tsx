@@ -44,8 +44,7 @@ export default (props:ListItemProps) => {
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
-          context?.loadCurrentCollectionData(props.item)
-          props.clickHandler("EditEntry", { collectionName: props.index });
+          props.clickHandler("EditEntry", { entryIndex: props.index });
           
         }}
       >

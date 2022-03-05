@@ -37,11 +37,13 @@ export default ({navigation}) => {
     return (
         <SafeAreaView>
             {entries.map((entry, index) => {
-                let entryDate = new Date(entry.datetime_of_initial_submit).toLocaleDateString()
+                let now = new Date(entry.datetime_of_initial_submit)
+                let entryDate = now.toLocaleDateString()
+                let entryTime = now.toTimeString()
                 return (
                     <EntryListItem 
                     key={index}
-                    item={entryDate} 
+                    item={`${entryDate}, at ${entryTime}`} 
                     index={index} 
                     deleteHandler={(index) => {
                         context?.deleteEntry(entry.datetime_of_initial_submit)
