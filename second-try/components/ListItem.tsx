@@ -45,7 +45,7 @@ export default (props:ListItemProps) => {
         style={styles.container}
         onPress={() => {
           context?.loadCurrentCollectionData(props.item)
-          props.clickHandler("AddEntry", { collectionName: props.item });
+          props.clickHandler("EditCollection", { collectionName: props.item });
           
         }}
       >
