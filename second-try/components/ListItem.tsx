@@ -19,6 +19,7 @@ interface ListItemProps {
   item: string;
   clickHandler: (address: string, dataObject?: object) => void;
   deleteHandler: (item: string) => void;
+  editHandler: (item: string, dataObject?: object) => void;
 }
 
 export default (props:ListItemProps) => {
@@ -27,17 +28,29 @@ export default (props:ListItemProps) => {
 
   const rightSwipe = (progress:any, dragX:any) => {
     return (
-      <TouchableOpacity
-        style={styles.delete}
-        onPress={() => {
-          console.log("Delete function ran!");
-          props.deleteHandler(props.item)
-        }}
-      >
-        <Icon name="trash" color="white" size={30} />
-      </TouchableOpacity>
+      <>
+        <TouchableOpacity
+          style={styles.delete}
+          onPress={() => {
+            console.log("Delete function ran!");
+            props.deleteHandler(props.item)
+          }}
+        >
+          <Icon name="trash" color="white" size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.edit}
+          onPress={() => {
+            console.log("Edit function ran!");
+            props.editHandler("EditCollection", { collectionName: props.item });
+          }}
+        >
+          <Icon name="gear" color="white" size={30} />
+        </TouchableOpacity>
+      </>
     );
   };
+  
 
   return (
     <Swipeable renderRightActions={rightSwipe} key={props.index.toString()}>
@@ -45,7 +58,7 @@ export default (props:ListItemProps) => {
         style={styles.container}
         onPress={() => {
           context?.loadCurrentCollectionData(props.item)
-          props.clickHandler("EditCollection", { collectionName: props.item });
+          props.clickHandler("ViewRawCollectionData", { collectionName: props.item });
           
         }}
       >
@@ -65,6 +78,14 @@ const styles = StyleSheet.create({
   },
   delete: {
     backgroundColor: "red",
+    maxWidth: 60,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  edit: {
+    backgroundColor: "yellow",
     maxWidth: 60,
     flex: 1,
     flexDirection: "row",

@@ -6,6 +6,7 @@ interface PropInterface {
     listData: string[] | undefined;
     clickHandler: (collectionName: string) => void;
     deleteHandler: (collectionName: string) => void;
+    editHandler: (collectionName: string) => void;
     [propName: string]: any;
 }
 
@@ -16,7 +17,9 @@ export default (props: PropInterface) =>  {
             <ListItem index={index} key={index}
                 item={item} 
                 clickHandler={props.clickHandler} 
-                deleteHandler={props.deleteHandler} />
+                deleteHandler={props.deleteHandler} 
+                editHandler={props.editHandler}
+                />
             )
         }} />
     )

@@ -18,6 +18,10 @@ export default ({navigation}:any) => {
         navigation.navigate(destination, params ? params : null)
     }
 
+    const editHandler = (destination: string, params?: object): void => {
+        navigation.navigate(destination, params ? params : null)
+    }
+
     const createNewCollectionHandler = (): void => {
         navigation.navigate("AddCollection")
     }
@@ -37,7 +41,7 @@ export default ({navigation}:any) => {
     //TODO the keys for stuff are now GUIDs, we'll need to load all the collections into memory to get their names. 
     return (
         <SafeAreaView>
-            <List listData={context?.collectionNames} clickHandler={clickHandler} deleteHandler={context?.deleteCollection} />
+            <List listData={context?.collectionNames} clickHandler={clickHandler} deleteHandler={context?.deleteCollection} editHandler={editHandler} />
             <Button title="create new collection" onPress={() => createNewCollectionHandler()} />
             <Button title="add new item to current collection" onPress={() => newItemHandler()} />
 

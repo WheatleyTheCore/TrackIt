@@ -12,36 +12,49 @@ import {
 import { AppDataContext } from '../DataMgmt/AppDataContext';
 import { flingGestureHandlerProps } from 'react-native-gesture-handler/lib/typescript/handlers/FlingGestureHandler';
 import DynamicGraph from '../components/DynamicGraph';
+import ChartTitle from '../components/ChartTitle';
 
 //this page only really works if there's numeric data, otherwise a contribution graph is the only thing that works.
 
 export default ({navigation}) => {
-    const [chartType, setChartType] = useState('contribution')
-    const [dependentVar, setDependentVar] = useState('x') //have this be set automatically somehow
-    const [independentVar, setIndependentVar] = useState('y')
 
     const context = useContext(AppDataContext)
+
+    const [chartType, setChartType] = useState('contribution')
+    const [dependentVar, setDependentVar] = useState('') //have this be set automatically somehow
+    const [independentVar, setIndependentVar] = useState('')
+
     
+    
+    const [schema, setSchema] = useState()
     const [entries, setEntries] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
+    //TODO update entries when one is added
 
     useEffect(() => {
-      if(context?.currentCollection != undefined) {
-          setEntries([...context?.currentCollection.entries])
-          setTimeout(() => {
-              setEntries([...context?.currentCollection.entries]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
-          }, 10)
-      }
+        setTimeout(() => {
+            setSchema([...context?.currentCollection.entrySchema])
+            setEntries([...context?.currentCollection.entries]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
+            setIsLoading(false)
+        }, 300)
       
-  }, [context?.currentCollection])
+  }, [isLoading])
 
-    let chartData = {x: [], y: []}
+    if (isLoading) {
+        return (
+            <Text>Loading...</Text>
+        )
+    }
 
-    entries.map(i => {
-        chartData.x.push(i.x)
-        chartData.y.push(i.y)
-    })
+    // let chartData = {x: [], y: []}
 
-    //TODO update contribution map to update count for commits on same day
+    // entries.map(i => {
+    //     chartData.x.push(i.x)
+    //     chartData.y.push(i.y)
+    // })
+
+    //TODO update contribution map to update count for commits on same day 
     // const getSubmissionDateData = () => {
     //   let data = []
     //   entries.map((entry: any) => {
@@ -53,23 +66,23 @@ export default ({navigation}) => {
     //   return data
     // }
 
-    const getLablels = () => {
-      const labels = []
-      entries.map(entry => {
-        labels.push(entry[dependentVar])
-      })
-      console.log(`labels: ${labels}`)
-      return labels
-    }
+    // const getLablels = () => {
+    //   const labels = []
+    //   entries.map(entry => {
+    //     labels.push(entry[dependentVar])
+    //   })
+    //   console.log(`labels: ${labels}`)
+    //   return labels
+    // }
 
-    const getData = () => {
-      const data = []
-      entries.map(entry => {
-        data.push(entry[independentVar])
-      })
-      console.log(`data: ${data}`)
-      return data
-    }
+    // const getData = () => {
+    //   const data = []
+    //   entries.map(entry => {
+    //     data.push(entry[independentVar])
+    //   })
+    //   console.log(`data: ${data}`)
+    //   return data
+    // }
 
     // console.log(new Date(entries[0].datetime_of_initial_submit).toString())
 
@@ -77,7 +90,16 @@ export default ({navigation}) => {
 
     return (
         <View>
-            <Picker
+            <ChartTitle 
+                fields={schema} 
+                chartType={chartType} 
+                setChartType={setChartType} 
+                dependentVar={dependentVar} 
+                setDependentVar={setDependentVar}
+                independentVar={independentVar}
+                setIndependentVar={setIndependentVar}
+            />
+            {/* <Picker
                 selectedValue={chartType}
                 onValueChange={(value, index) => {
                     setChartType(value)
@@ -120,7 +142,7 @@ export default ({navigation}) => {
               <DynamicGraph chartType='line' dataObject={{
                 labels: getLablels(),
                 data: getData()
-              }} />
+              }} /> */}
         </View>
     )
 }

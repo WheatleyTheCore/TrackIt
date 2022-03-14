@@ -8,14 +8,16 @@ import { AppDataContext } from '../DataMgmt/AppDataContext'
 export default ({navigation}) => {
     const context = useContext(AppDataContext)
     
-    const [entries, setEntries] = useState(context?.currentCollection.entreis)
+    const [entries, setEntries] = useState()
     const [isLoading, setIsLoading] = useState(true)
+
+    //TODO update entries when one is added
 
     useEffect(() => {
         setTimeout(() => {
             setEntries([...context?.currentCollection.entries]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
             setIsLoading(false)
-        }, 100)
+        }, 500)
       
   }, [isLoading])
 
@@ -57,6 +59,10 @@ export default ({navigation}) => {
                 )
             })}
             <Button title="add entry" onPress={() => createNewEntryHandler()} />
+            <Button title="View Graphed Data" onPress={() => {
+                navigation.navigate("ViewGraphedCollectionData")
+            }} />
+
         </SafeAreaView>
     )
 }

@@ -6,7 +6,7 @@ import {Picker} from '@react-native-picker/picker';
 
 export default ({entrySchema, entry, handleInputChange, handleSubmitForm}) => {
 
-      //TODO if sensor data, display text "__ will be recorded when you hit submit" instead of input
+      
     
       return (
         <View>
