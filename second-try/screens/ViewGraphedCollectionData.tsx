@@ -55,34 +55,34 @@ export default ({navigation}) => {
     // })
 
     //TODO update contribution map to update count for commits on same day 
-    // const getSubmissionDateData = () => {
-    //   let data = []
-    //   entries.map((entry: any) => {
-    //     let entryObect = {}
-    //     entryObect.date = entry.datetime_of_initial_submit
-    //     entryObect.count = 1
-    //     data.push(entryObect)
-    //   })
-    //   return data
-    // }
+    const getSubmissionDateData = () => {
+      let data: any = []
+      entries.map((entry: any) => {
+        let entryObect = {}
+        entryObect.date = entry.datetime_of_initial_submit
+        entryObect.count = 1
+        data.push(entryObect)
+      })
+      return data
+    }
 
-    // const getLablels = () => {
-    //   const labels = []
-    //   entries.map(entry => {
-    //     labels.push(entry[dependentVar])
-    //   })
-    //   console.log(`labels: ${labels}`)
-    //   return labels
-    // }
+    const getDataLablels = () => {
+      const labels: any[] = []
+      entries.map(entry => {
+        labels.push(entry[dependentVar])
+      })
+      console.log(`labels: ${labels}`)
+      return labels
+    }
 
-    // const getData = () => {
-    //   const data = []
-    //   entries.map(entry => {
-    //     data.push(entry[independentVar])
-    //   })
-    //   console.log(`data: ${data}`)
-    //   return data
-    // }
+    const getDataValues = () => {
+      const data: any[] = []
+      entries.map(entry => {
+        data.push(entry[independentVar])
+      })
+      console.log(`data: ${data}`)
+      return data
+    }
 
     // console.log(new Date(entries[0].datetime_of_initial_submit).toString())
 
@@ -99,50 +99,7 @@ export default ({navigation}) => {
                 independentVar={independentVar}
                 setIndependentVar={setIndependentVar}
             />
-            {/* <Picker
-                selectedValue={chartType}
-                onValueChange={(value, index) => {
-                    setChartType(value)
-                }}>
-                    <Picker.Item label="Line Chart" value="line" />
-                    <Picker.Item label="Bar Chart" value="bar" />
-                    <Picker.Item label="Pie Chart" value="pie" />
-                    <Picker.Item label="Progress Chart" value="progress" />
-                    <Picker.Item label="Contribution Graph" value="contribution" />
-                    <Picker.Item label="Stacked Bar Chart" value="stackedBar" />
-                </Picker>
-            {chartType != 'contribution' ? 
-            <View>
-                <Text>Dependent Variable</Text>
-                <Picker
-                selectedValue={dependentVar}
-                onValueChange={(value, index) => {
-                    setDependentVar(value)
-                }}>
-                    {context?.currentCollection.entrySchema.map((field: any) => {
-                        return <Picker.Item label={field.name} value={field.name} />
-                    })}
-                </Picker> 
-                <Text>Independent Variable</Text>
-                <Picker
-                selectedValue={independentVar}
-                onValueChange={(value, index) => {
-                    setIndependentVar(value)
-
-                }}>
-                    {context?.currentCollection.entrySchema.map((field: any) => {
-                        return <Picker.Item label={field.name} value={field.name} />
-                    })}
-                </Picker>
-
-
-            </View>
-            :
-            null}
-              <DynamicGraph chartType='line' dataObject={{
-                labels: getLablels(),
-                data: getData()
-              }} /> */}
+              <DynamicGraph chartType={chartType} entries={entries} dependentVar={dependentVar} independentVar={independentVar} />
         </View>
     )
 }
