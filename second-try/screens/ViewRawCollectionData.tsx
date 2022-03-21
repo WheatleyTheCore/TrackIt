@@ -8,18 +8,31 @@ import { AppDataContext } from '../DataMgmt/AppDataContext'
 export default ({navigation}) => {
     const context = useContext(AppDataContext)
     
-    const [entries, setEntries] = useState()
+    const [entries, setEntries] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [navigatedAwayFlag, setNavigatedAwayFlag] = useState(false)
 
     //TODO update entries when one is added
 
     useEffect(() => {
-        setTimeout(() => {
-            setEntries([...context?.currentCollection.entries]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
+        if(context?.currentCollection != undefined) {
             setIsLoading(false)
-        }, 500)
-      
-  }, [isLoading])
+            setTimeout(() => {
+                setEntries(context.currentCollection.entries)
+            }, 100)
+        }
+    }, [context?.currentCollection, isLoading])
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            if (context?.currentCollection != undefined) {
+                setTimeout(() => {
+                    setEntries(context.currentCollection.entries)
+                }, 100)
+            }
+        });
+        return unsubscribe;
+      }, [navigation]);
 
     if (isLoading) {
         return (
@@ -33,6 +46,7 @@ export default ({navigation}) => {
     }
 
     const createNewEntryHandler = (): void => {
+        setNavigatedAwayFlag(true)
         navigation.navigate("AddEntry")
     }  
 

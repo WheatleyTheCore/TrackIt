@@ -51,11 +51,9 @@ export const AppDataContextProvider = (props: any): ReactElement => {
 
     //console.log(collectionNames)
 
-    //create table for collections (TODO abstract into setup function)
-    // database.transaction(tx => {
-    //     tx.executeSql('drop table if exists collections')
-    //     tx.executeSql('create table if not exists collections (id integer primary key autoincrement, name text unique, entry_schema text, entries text)')
-    // })
+    database.transaction(tx => {
+        tx.executeSql('create table if not exists collections (id integer primary key autoincrement, name text unique, entry_schema text, entries text)')
+    })
 
     const getAllCollectionNames = () => {
         let collectionNames: string[] = [];

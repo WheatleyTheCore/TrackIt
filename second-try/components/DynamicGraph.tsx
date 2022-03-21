@@ -11,16 +11,11 @@ import {
 
   export default ({chartType, entries, dependentVar, independentVar}) =>  {
 
-      if (dependentVar == '') return <Text>Choose a valid dependent variable</Text>
-      if (independentVar == '') return <Text>Choose a valid independent variable</Text>
-      if (dependentVar == independentVar) return <Text>Dependent variable and independent variable cannot be the same</Text>
-
       const screenWidth = Dimensions.get("window").width
       const chartConfig={
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#fb8c00",
         backgroundGradientTo: "#ffa726",
-        decimalPlaces: 2, // optional, defaults to 2dp
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         style: {
@@ -41,7 +36,7 @@ import {
                 let dateObjDate = new Date(dateObj.date).toDateString()
                 let entryObjDate = new Date(entry.datetime_of_initial_submit).toDateString()
                 console.log(`${entryObjDate}: ${dateObjDate == entryObjDate}`)
-                return (dateObjDate == entryObjDate)
+                if (dateObjDate == entryObjDate) return dateObjDate
               })
 
               if (entryDateObject) {
@@ -66,41 +61,136 @@ import {
                 />
             )
         case 'line': 
-            let dataObject = {}
-            entries.map((entry: any) => {
-              dataObject[entry[dependentVar]] = entry[independentVar]
-            })
+          if (dependentVar == '') return <Text>Choose a valid dependent variable</Text>
+          if (independentVar == '') return <Text>Choose a valid independent variable</Text>
+          if (dependentVar == independentVar) return <Text>Dependent variable and independent variable cannot be the same</Text>
 
-            const orderedData = Object.keys(dataObject).sort().reduce(
-              (obj, key) => { 
-                obj[key] = dataObject[key]; 
-                return obj;
-              }, 
-              {}
-            );
+          let dataObject = {}
+          entries.map((entry: any) => {
+            dataObject[entry[dependentVar]] = entry[independentVar]
+          })
 
-            const labels = Object.keys(orderedData)
-            let data = []
-            for (const label in orderedData) {
-              data.push(orderedData[label])
+          const orderedData = Object.keys(dataObject).sort().reduce(
+            (obj, key) => { 
+              obj[key] = dataObject[key]; 
+              return obj;
+            }, 
+            {}
+          );
+
+          const labels = Object.keys(orderedData)
+          let data = []
+          for (const label in orderedData) {
+            data.push(orderedData[label])
+          }
+
+          console.log(`Labels: ${labels}`)
+          console.log(`data: ${data}`)
+
+          return (
+
+              <LineChart
+              data={{
+                labels: labels,
+                datasets: [
+                  {
+                    data: data
+                  }
+                ]
+              }}
+              width={screenWidth} // from react-native
+              height={220}
+              chartConfig={chartConfig}
+            />
+          )
+        case 'bar':
+
+          let barData = entries.reduce((dataArray, currentEntry) => {
+            console.log(currentEntry)
+            let currentEntryInDataArray = dataArray.find(element => element.name == currentEntry[independentVar])
+            if (currentEntryInDataArray) {
+              dataArray[dataArray.indexOf(currentEntryInDataArray)].occurences += 1
+            } else {
+              dataArray.push({
+                name: currentEntry[independentVar],
+                occurences: 1
+              })
+            }
+            return dataArray
+          }, [])
+
+          let barLabels = []
+          let barOccurences = []
+
+          barData.forEach(element => {
+            barLabels.push(element.name)
+            barOccurences.push(element.occurences)
+          });
+
+          let barGraphInputData = {
+            labels: barLabels,
+            datasets: [
+              {
+                data: barOccurences
+              }
+            ]
+          };
+          return (
+            <BarChart
+            data={barGraphInputData}
+            width={screenWidth}
+            height={220}
+            chartConfig={chartConfig}
+            fromZero={true}
+          />
+          )
+          
+        case 'pie':
+          const colorList = ['#12BDC9', '#FC1EA5', '#39EDFA', '#FADC20', '#AD9A1F', '#468FFA', '#3128FA', '#FA7C34', '#FAD102']
+
+          const generateColor  = (pieDataLen) => {
+            let index = pieDataLen;
+            while (index > colorList.length) {
+              index -= colorList.length
             }
 
-            return (
+            return colorList[index]
+          }
 
-                <LineChart
-                data={{
-                  labels: labels,
-                  datasets: [
-                    {
-                      data: data
-                    }
-                  ]
-                }}
-                width={screenWidth} // from react-native
+          let piedata = entries.reduce((dataArray, currentEntry) => {
+            console.log(currentEntry)
+            let currentEntryInDataArray = dataArray.find(element => element.name == currentEntry[independentVar])
+            if (currentEntryInDataArray) {
+              dataArray[dataArray.indexOf(currentEntryInDataArray)].occurences += 1
+            } else {
+              dataArray.push({
+                name: currentEntry[independentVar],
+                occurences: 1,
+                color: generateColor(dataArray.length),
+                legendFontColor: "#7F7F7F",
+                legendFontSize: 15
+              })
+            }
+            return dataArray
+          }, [])
+
+          console.log('------piedata------')
+          console.log(piedata)
+
+            return (
+              <PieChart
+                data={piedata}
+                width={screenWidth}
                 height={220}
                 chartConfig={chartConfig}
+                accessor={"occurences"}
+                backgroundColor={"transparent"}
+                paddingLeft={"15"}
+                center={[10, 50]}
+                absolute
               />
             )
+
         
 
 

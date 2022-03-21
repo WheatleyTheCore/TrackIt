@@ -42,6 +42,7 @@ export default (props:ListItemProps) => {
           style={styles.edit}
           onPress={() => {
             console.log("Edit function ran!");
+            context?.loadCurrentCollectionData(props.item)
             props.editHandler("EditCollection", { collectionName: props.item });
           }}
         >

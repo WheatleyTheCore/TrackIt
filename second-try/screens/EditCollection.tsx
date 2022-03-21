@@ -16,14 +16,11 @@ export default ({route, navigation}) => {
     const [isLoading, setIsLoading] = useState(true)
       
     useEffect(() => {
-        if(context?.currentCollection != undefined) {
+        setTimeout(() => {
+            setTitle(context.currentCollection.name)
+            setSchema(context?.currentCollection.entrySchema) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
             setIsLoading(false)
-            setSchema(context?.currentCollection.entrySchema)
-            setTimeout(() => {
-                setTitle(context.currentCollection.name)
-                setSchema(context?.currentCollection.entrySchema) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
-            }, 100)
-        }
+        }, 1000)
     }, [context?.currentCollection, isLoading])
 
     if (isLoading) return <Text>Loading....</Text>

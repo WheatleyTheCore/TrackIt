@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { Button, Text, TextInput, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import {Picker} from '@react-native-picker/picker';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitForm, handleDeleteField}) => {
     
       return (
-        <View>
+        <ScrollView>
           {
             entrySchema.Fields.map((item, index) => {
               return (
@@ -43,6 +44,6 @@ export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitFo
           
         }
           <Button title="Submit" onPress={() => handleSubmitForm()} />
-        </View>
+        </ScrollView>
       );
 }
