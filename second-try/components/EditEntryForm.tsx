@@ -1,12 +1,24 @@
 import React from 'react'
-import { Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, TextInput, View, Alert} from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import {Picker} from '@react-native-picker/picker';
 
 
 export default ({entrySchema, entry, handleInputChange, handleSubmitForm}) => {
 
-      
+      const validateInput = () => {
+        for (const attribute in entry) {
+          if (attribute == "datetime_of_initial_submit") continue
+          const attributeSchema = entrySchema.find(schema => schema.name == attribute)
+          if (attributeSchema.type == 'number') {
+            if (isNaN(entry[attribute])) {
+              Alert.alert('invalid input', `${attribute} must be a number`)
+              return false
+            }
+          }
+        }
+        return true
+      }
     
       return (
         <View>
@@ -27,7 +39,9 @@ export default ({entrySchema, entry, handleInputChange, handleSubmitForm}) => {
                   </View>
                 )}
             )}
-          <Button title="Submit" onPress={() => handleSubmitForm()} />
+            <Button title="Submit" onPress={() => {
+              if (validateInput()) handleSubmitForm()
+            }} />
         </View>
       );
 }

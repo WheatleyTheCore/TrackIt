@@ -2,17 +2,31 @@ import React from 'react'
 import { Button, Text, TextInput, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import {Picker} from '@react-native-picker/picker';
+import { Alert } from 'react-native';
 
 
 export default ({entrySchema, handleSubmitForm}) => {
 
+    const validateInput = (data) => {
+      for (const attribute in data) {
+        if (attribute == "datetime_of_initial_submit") continue
+        const attributeSchema = entrySchema.find(schema => schema.name == attribute)
+        if (attributeSchema.type == 'number') {
+          if (isNaN(data[attribute])) {
+            Alert.alert('invalid input', `${attribute} must be a number`)
+            return false
+          }
+        }
+      }
+      return true
+    }
+
 
     const { control, handleSubmit, formState: { errors } } = useForm({});
       const onSubmit = data => {
-        handleSubmitForm(data)
-      }
 
-      //TODO if sensor data, display text "__ will be recorded when you hit submit" instead of input
+        if (validateInput(data)) handleSubmitForm(data)
+      }
     
       return (
         <View>
