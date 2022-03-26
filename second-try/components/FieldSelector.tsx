@@ -19,7 +19,7 @@ export default ({fieldsObject, types, selectedField, setSelectedField}: props) =
             onValueChange={(value: any) => {
                 setSelectedField(value)
             }}>
-                {selectedField == -1 && <Picker.Item label="" value={-1} />}
+                {selectedField == -1 && <Picker.Item label="Please Select" value={-1} />}
                {fieldsObject.filter((field: any) => types.indexOf(field.type) >= 0).map((field: any) => {
                    return (
                        <Picker.Item label={field.name} value={field.name} />

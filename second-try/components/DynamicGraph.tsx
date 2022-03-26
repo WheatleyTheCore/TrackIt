@@ -61,8 +61,8 @@ import {
                 />
             )
         case 'line': 
-          if (dependentVar == -1) return <Text>Choose a valid dependent variable</Text>
-          if (independentVar == -1) return <Text>Choose a valid independent variable</Text>
+          if (dependentVar == -1) return <Text>Choose a dependent variable</Text>
+          if (independentVar == -1) return <Text>Choose an independent variable</Text>
           if (dependentVar == independentVar) return <Text>Dependent variable and independent variable cannot be the same</Text>
 
           let dataObject = {}
@@ -105,7 +105,7 @@ import {
             />
           )
         case 'bar':
-          if (independentVar == -1) return <Text>Choose a valid independent variable</Text>
+          if (independentVar == -1) return <Text>Choose an independent variable</Text>
 
 
           let barData = entries.reduce((dataArray, currentEntry) => {
@@ -149,7 +149,7 @@ import {
           )
           
         case 'pie':
-          if (independentVar == -1) return <Text>Choose a valid independent variable</Text>
+          if (independentVar == -1) return <Text>Choose an independent variable</Text>
 
           const colorList = ['#12BDC9', '#FC1EA5', '#39EDFA', '#FADC20', '#AD9A1F', '#468FFA', '#3128FA', '#FA7C34', '#FAD102']
 
