@@ -61,13 +61,14 @@ import {
                 />
             )
         case 'line': 
-          if (dependentVar == '') return <Text>Choose a valid dependent variable</Text>
-          if (independentVar == '') return <Text>Choose a valid independent variable</Text>
+          if (dependentVar == -1) return <Text>Choose a valid dependent variable</Text>
+          if (independentVar == -1) return <Text>Choose a valid independent variable</Text>
           if (dependentVar == independentVar) return <Text>Dependent variable and independent variable cannot be the same</Text>
 
           let dataObject = {}
           entries.map((entry: any) => {
-            dataObject[entry[dependentVar]] = entry[independentVar]
+            const bothValuesAreNumbers = (!isNaN(entry[dependentVar])) && (!isNaN(entry[independentVar]))
+            if (dependentVar in entry && bothValuesAreNumbers) dataObject[entry[dependentVar]] = entry[independentVar]
           })
 
           const orderedData = Object.keys(dataObject).sort().reduce(
@@ -104,6 +105,8 @@ import {
             />
           )
         case 'bar':
+          if (independentVar == -1) return <Text>Choose a valid independent variable</Text>
+
 
           let barData = entries.reduce((dataArray, currentEntry) => {
             console.log(currentEntry)
@@ -146,6 +149,8 @@ import {
           )
           
         case 'pie':
+          if (independentVar == -1) return <Text>Choose a valid independent variable</Text>
+
           const colorList = ['#12BDC9', '#FC1EA5', '#39EDFA', '#FADC20', '#AD9A1F', '#468FFA', '#3128FA', '#FA7C34', '#FAD102']
 
           const generateColor  = (pieDataLen) => {
@@ -173,9 +178,6 @@ import {
             }
             return dataArray
           }, [])
-
-          console.log('------piedata------')
-          console.log(piedata)
 
             return (
               <PieChart

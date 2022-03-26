@@ -23,7 +23,7 @@ export default ({fields, chartType, setChartType, dependentVar, setDependentVar,
                 onValueChange={(value, index) => {
                     setChartType(value)
                 }}>
-                    <Picker.Item label="Line Chart" value="line" />
+                    {fields.length > 1 && <Picker.Item label="Line Chart" value="line" />}
                     <Picker.Item label="Bar Chart" value="bar" />
                     <Picker.Item label="Pie Chart" value="pie" />
                     <Picker.Item label="Contribution Graph" value="contribution" />
@@ -32,19 +32,19 @@ export default ({fields, chartType, setChartType, dependentVar, setDependentVar,
                     chartType == 'line' ? 
                     <View>
                         <Text> of </Text>
-                        <FieldSelector fieldsObject={fields} types={["number"]} selectedField={dependentVar} setSelectedField={setDependentVar} />
+                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={dependentVar} setSelectedField={setDependentVar} />
                         <Text> over </Text>
-                        <FieldSelector fieldsObject={fields} types={["number", "text"]} selectedField={independentVar} setSelectedField={setIndependentVar}/>
+                        <FieldSelector fieldsObject={fields} types={["number"]} selectedField={independentVar} setSelectedField={setIndependentVar}/>
                     </View> :
                     chartType == 'bar' ? 
                     <View>
                         <Text> of the distribution of recorded </Text>
-                        <FieldSelector fieldsObject={fields} types={["text", "number"]} selectedField={independentVar} setSelectedField={setIndependentVar} />
+                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={independentVar} setSelectedField={setIndependentVar} />
                     </View> :
                     chartType == 'pie' ? 
                     <View>
                         <Text> of the distribution of recorded </Text>
-                        <FieldSelector fieldsObject={fields} types={["text", "number"]} selectedField={independentVar} setSelectedField={setIndependentVar} />
+                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={independentVar} setSelectedField={setIndependentVar} />
                     </View> :
                     <View>
                         <Text>of data recordings over time.</Text>

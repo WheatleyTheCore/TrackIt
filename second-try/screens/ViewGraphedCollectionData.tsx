@@ -21,8 +21,8 @@ export default ({navigation}) => {
     const context = useContext(AppDataContext)
 
     const [chartType, setChartType] = useState('contribution')
-    const [dependentVar, setDependentVar] = useState('') //have this be set automatically somehow
-    const [independentVar, setIndependentVar] = useState('')
+    const [dependentVar, setDependentVar] = useState(-1) //have this be set automatically somehow
+    const [independentVar, setIndependentVar] = useState(-1)
 
     
     
@@ -36,6 +36,12 @@ export default ({navigation}) => {
         setTimeout(() => {
             setSchema([...context?.currentCollection.entrySchema])
             setEntries([...context?.currentCollection.entries]) //wait for context to update and set the data. This is a hack, and will (hopefully) be fixed later
+            // if (context?.currentCollection.entrySchema.length >= 2) {
+            //   setDependentVar(context?.currentCollection.entrySchema[0].name)
+            //   setIndependentVar(context?.currentCollection.entrySchema[1].name)
+            // } else {
+            //   setIndependentVar(context?.currentCollection.entrySchema[0].name)
+            // }
             setIsLoading(false)
         }, 300)
       
@@ -47,47 +53,12 @@ export default ({navigation}) => {
         )
     }
 
-    // let chartData = {x: [], y: []}
+    
 
-    // entries.map(i => {
-    //     chartData.x.push(i.x)
-    //     chartData.y.push(i.y)
-    // })
 
-    //TODO update contribution map to update count for commits on same day 
-    const getSubmissionDateData = () => {
-      let data: any = []
-      entries.map((entry: any) => {
-        let entryObect = {}
-        entryObect.date = entry.datetime_of_initial_submit
-        entryObect.count = 1
-        data.push(entryObect)
-      })
-      return data
-    }
 
-    const getDataLablels = () => {
-      const labels: any[] = []
-      entries.map(entry => {
-        labels.push(entry[dependentVar])
-      })
-      console.log(`labels: ${labels}`)
-      return labels
-    }
-
-    const getDataValues = () => {
-      const data: any[] = []
-      entries.map(entry => {
-        data.push(entry[independentVar])
-      })
-      console.log(`data: ${data}`)
-      return data
-    }
-
-    // console.log(new Date(entries[0].datetime_of_initial_submit).toString())
-
-    // console.log(context?.currentCollection)
-
+    console.log(schema)
+    //todo: there isn't an attribute with type number, have line chart say "there must be a number"
     return (
         <View>
             <ChartTitle 

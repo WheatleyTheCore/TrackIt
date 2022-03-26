@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {View, SafeAreaView, Text, TextInput, Button} from 'react-native'
+import {View, SafeAreaView, Text, TextInput, Button, Alert} from 'react-native'
 import CreateCollectionForm from '../components/CreateCollectionForm'
 import { AppDataContext } from '../DataMgmt/AppDataContext'
 import uuid from 'react-native-uuid'
@@ -54,8 +54,11 @@ export default () => {
                     previousSchema.Fields[index].name = updatedText
                     setSchema(previousSchema)
                 }}
-                handleSubmitForm={(data) => {
-                    console.log('----------data from the collection screen--------')
+                handleSubmitForm={() => {
+                    if (schema.Fields.length == 0) {
+                        Alert.alert('Invalid Collection', 'You must have at least one field.')
+                        return
+                    }
                     const newCollection = context?.collectionFactory(title, schema.Fields)
                     context?.createCollection(newCollection)
                 }}
