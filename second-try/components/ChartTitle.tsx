@@ -13,7 +13,9 @@ interface props {
     setIndependentVar?: (value: string) => void;
   }
 
-  //TODO store selectedField outside and pass in "onchange" prop
+  /**-----------------------------------------------------------
+   * REPLACE PICKERS WITH ACTION SHEETS, IT'S BETTER FOR IOS
+   ------------------------------------------------------------*/
 
 export default ({fields, chartType, setChartType, dependentVar, setDependentVar, independentVar, setIndependentVar}: props) =>  {
     return (
