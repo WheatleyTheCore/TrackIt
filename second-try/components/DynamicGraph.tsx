@@ -66,27 +66,34 @@ import {
           if (dependentVar == independentVar) return <Text>Dependent variable and independent variable cannot be the same</Text>
 
           let dataObject = {}
+          let bothValuesAreNumbers = true;
+
           entries.map((entry: any) => {
-            const bothValuesAreNumbers = (!isNaN(entry[dependentVar])) && (!isNaN(entry[independentVar]))
-            if (dependentVar in entry && bothValuesAreNumbers) dataObject[entry[dependentVar]] = entry[independentVar]
+            if ((isNaN(entry[dependentVar])) || (!isNaN(entry[independentVar]))) bothValuesAreNumbers = false;
+            if (independentVar in entry) dataObject[entry[independentVar]] = entry[dependentVar]
           })
 
-          const orderedData = Object.keys(dataObject).sort().reduce(
-            (obj, key) => { 
-              obj[key] = dataObject[key]; 
-              return obj;
-            }, 
-            {}
-          );
+          if (bothValuesAreNumbers) {
+            const orderedData = Object.keys(dataObject).sort().reduce(
+              (obj, key) => { 
+                obj[key] = dataObject[key]; 
+                return obj;
+              }, 
+              {}
+            );
 
-          const labels = Object.keys(orderedData)
+            dataObject = orderedData;
+          }
+          
+
+          const labels = Object.keys(dataObject)
           let data = []
-          for (const label in orderedData) {
-            data.push(orderedData[label])
+          for (const label in dataObject) {
+            data.push(parseInt(dataObject[label]))
           }
 
           console.log(`Labels: ${labels}`)
-          console.log(`data: ${data}`)
+          console.log(`data: ${typeof data[0]}`)
 
           return (
 

@@ -18,7 +18,7 @@ export default ({fieldsObject, types, selectedField, setSelectedField}: props) =
 
     const openActionSheet = () => {
         let options = []
-        fieldsObject.filter((field: any) => types.indexOf(field.type) >= 0).map(i => options.push(i.name))
+        fieldsObject.filter((field: any) => types.indexOf(field.type) >= 0 || types.indexOf('any') >= 0).map(i => options.push(i.name))
         const destructiveButtonIndex = 0;
         const cancelButtonIndex = options.length;
         showActionSheetWithOptions(

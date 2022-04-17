@@ -34,9 +34,9 @@ export default ({fields, chartType, setChartType, dependentVar, setDependentVar,
                     chartType == 'line' ? 
                     <View>
                         <Text> of </Text>
-                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={dependentVar} setSelectedField={setDependentVar} />
+                        <FieldSelector fieldsObject={fields} types={["number"]} selectedField={dependentVar} setSelectedField={setDependentVar} />
                         <Text> over </Text>
-                        <FieldSelector fieldsObject={fields} types={["number"]} selectedField={independentVar} setSelectedField={setIndependentVar}/>
+                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={independentVar} setSelectedField={setIndependentVar}/>
                     </View> :
                     chartType == 'bar' ? 
                     <View>
