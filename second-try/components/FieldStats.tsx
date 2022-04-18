@@ -3,6 +3,7 @@ import { View, Dimensions, Text } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import FieldSelector from './FieldSelector';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {min, max, sum, mean, median, mode, variance, standardDeviation} from 'simple-statistics'
 
 interface props {
     fields: object[];
@@ -39,17 +40,29 @@ export default ({fields, entries}: props) =>  {
     }
     const renderStatistic = (metric: string) => {
         switch (metric) {
-            case 'mean':
-                return numberList.reduce((a, b) => a + b, 0)/(numberList.length)
+            case 'Min':
+                return min(numberList)
                 break;
-            case 'median':
-                return 'median'
+            case 'Max':
+                return max(numberList)
                 break;
-            case 'mode':
-                return 'mode'
+            case 'Sum':
+                return sum(numberList)
                 break;
-            case 'standard deviation':
-                return 'std'
+            case 'Mean':
+                return mean(numberList)
+                break;
+            case 'Median':
+                return median(numberList)
+                break;
+            case 'Mode':
+                return mode(numberList)
+                break;
+            case 'Variance':
+                return variance(numberList)
+                break;
+            case 'Standard Deviation':
+                return standardDeviation(numberList)
                 break;
         }
 
@@ -57,7 +70,7 @@ export default ({fields, entries}: props) =>  {
     }
     return (
         <View>
-            <TouchableOpacity onPress={() => openActionSheet(['mean', 'median', 'mode', 'standard deviation'], (value: string) => setMetric(value))} style={{backgroundColor: 'grey'}}>
+            <TouchableOpacity onPress={() => openActionSheet(['Min', 'Max', 'Sum', 'Mean', 'Median', 'Mode', 'Variance', 'Standard Deviation'], (value: string) => setMetric(value))} style={{backgroundColor: 'grey'}}>
                 {metric == -1 ? <Text>Please Select</Text> : <Text>{metric}</Text>}
             </TouchableOpacity>
             <Text> of </Text>
