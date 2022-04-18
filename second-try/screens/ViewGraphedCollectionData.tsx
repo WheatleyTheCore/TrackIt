@@ -13,6 +13,7 @@ import { AppDataContext } from '../DataMgmt/AppDataContext';
 import { flingGestureHandlerProps } from 'react-native-gesture-handler/lib/typescript/handlers/FlingGestureHandler';
 import DynamicGraph from '../components/DynamicGraph';
 import ChartTitle from '../components/ChartTitle';
+import FieldStats from '../components/FieldStats';
 
 //this page only really works if there's numeric data, otherwise a contribution graph is the only thing that works.
 
@@ -71,6 +72,9 @@ export default ({navigation}) => {
                 setIndependentVar={setIndependentVar}
             />
               <DynamicGraph chartType={chartType} entries={entries} dependentVar={dependentVar} independentVar={independentVar} />
+
+              {/* ONLY RENDER STATS IF THERE IS A ATTRIBUTE THAT'S A NUMBER */}
+              <FieldStats fields={schema} entries={entries}/>
         </View>
     )
 }

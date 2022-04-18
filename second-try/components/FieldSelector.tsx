@@ -19,7 +19,7 @@ export default ({fieldsObject, types, selectedField, setSelectedField}: props) =
     const openActionSheet = () => {
         let options = []
         fieldsObject.filter((field: any) => types.indexOf(field.type) >= 0 || types.indexOf('any') >= 0).map(i => options.push(i.name))
-        const destructiveButtonIndex = 0;
+        const destructiveButtonIndex = -1;
         const cancelButtonIndex = options.length;
         showActionSheetWithOptions(
             {
@@ -28,6 +28,7 @@ export default ({fieldsObject, types, selectedField, setSelectedField}: props) =
               cancelButtonIndex,
             },
             (buttonIndex) => {
+              //TODO don't change thing if user cancels
                 setSelectedField(options[buttonIndex])
               // Do something here depending on the button index selected
             }
@@ -35,7 +36,7 @@ export default ({fieldsObject, types, selectedField, setSelectedField}: props) =
     }
 
     return (
-        <TouchableOpacity onPress={() => openActionSheet()}>
+        <TouchableOpacity onPress={() => openActionSheet()} style={{backgroundColor: 'grey'}}>
             {selectedField == -1 ? <Text>Please Select</Text> : <Text>{selectedField}</Text>}
         </TouchableOpacity>
         // <Picker

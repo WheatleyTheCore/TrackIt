@@ -1,29 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Dimensions, Text } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import FieldSelector from './FieldSelector';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface props {
     fields: object[];
-    chartType: string;
-    setChartType: (type: string) => void;
-    dependentVar? : string;
-    setDependentVar?: (value: string) => void;
-    independentVar? : string;
-    setIndependentVar?: (value: string) => void;
+    entries: any;
   }
 
-  /**-----------------------------------------------------------
-   * REPLACE PICKERS WITH ACTION SHEETS, IT'S BETTER FOR IOS
-   ------------------------------------------------------------*/
-
-export default ({fields, chartType, setChartType, dependentVar, setDependentVar, independentVar, setIndependentVar}: props) =>  {
+export default ({fields, entries}: props) =>  {
     const { showActionSheetWithOptions } = useActionSheet();
     const [metric, setMetric] = useState();
     const [field, setField] = useState();
+    const [numberList, setNumberList] = useState([])
+
+    useEffect(() => {
+        let list = []
+        entries.map((entry: any) => {
+            list.push(parseInt(entry[field]))
+        })
+        setNumberList(list)
+    }, [metric, field])
 
     const openActionSheet = (options: string[], handleSelect: (value: string) => void) => {
-        const destructiveButtonIndex = 0;
+        const destructiveButtonIndex = -1;
         const cancelButtonIndex = options.length;
         showActionSheetWithOptions(
             {
@@ -36,40 +37,36 @@ export default ({fields, chartType, setChartType, dependentVar, setDependentVar,
             }
           );
     }
+    const renderStatistic = (metric: string) => {
+        switch (metric) {
+            case 'mean':
+                return numberList.reduce((a, b) => a + b, 0)/(numberList.length)
+                break;
+            case 'median':
+                return 'median'
+                break;
+            case 'mode':
+                return 'mode'
+                break;
+            case 'standard deviation':
+                return 'std'
+                break;
+        }
+
+        return 'please select one'
+    }
     return (
         <View>
-            <Picker
-                selectedValue={chartType}
-                onValueChange={(value, index) => {
-                    setChartType(value)
-                }}>
-                    {fields.length > 1 && <Picker.Item label="Line Chart" value="line" />}
-                    <Picker.Item label="Bar Chart" value="bar" />
-                    <Picker.Item label="Pie Chart" value="pie" />
-                    <Picker.Item label="Contribution Graph" value="contribution" />
-                </Picker>
-                {
-                    chartType == 'line' ? 
-                    <View>
-                        <Text> of </Text>
-                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={dependentVar} setSelectedField={setDependentVar} />
-                        <Text> over </Text>
-                        <FieldSelector fieldsObject={fields} types={["number"]} selectedField={independentVar} setSelectedField={setIndependentVar}/>
-                    </View> :
-                    chartType == 'bar' ? 
-                    <View>
-                        <Text> of the distribution of recorded </Text>
-                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={independentVar} setSelectedField={setIndependentVar} />
-                    </View> :
-                    chartType == 'pie' ? 
-                    <View>
-                        <Text> of the distribution of recorded </Text>
-                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={independentVar} setSelectedField={setIndependentVar} />
-                    </View> :
-                    <View>
-                        <Text>of data recordings over time.</Text>
-                    </View>
+            <TouchableOpacity onPress={() => openActionSheet(['mean', 'median', 'mode', 'standard deviation'], (value: string) => setMetric(value))} style={{backgroundColor: 'grey'}}>
+                {metric == -1 ? <Text>Please Select</Text> : <Text>{metric}</Text>}
+            </TouchableOpacity>
+            <Text> of </Text>
+            <FieldSelector fieldsObject={fields} types={["number"]} selectedField={field} setSelectedField={setField} />
+            <Text>
+                : {
+                    renderStatistic(metric)
                 }
+            </Text>
         </View>
     )
 }
