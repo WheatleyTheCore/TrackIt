@@ -1,9 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {View, SafeAreaView, Text, Button} from 'react-native'
+import {View, SafeAreaView, Text, Button, ScrollView} from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
-
-
-
 import {loadAllCollectionNames} from '../DataMgmt/storageUtils'
 import List from '../components/List'
 import { AppDataContext } from '../DataMgmt/AppDataContext'
@@ -41,10 +38,10 @@ export default ({navigation}:any) => {
     //TODO the keys for stuff are now GUIDs, we'll need to load all the collections into memory to get their names. 
     return (
         <SafeAreaView>
-            <List listData={context?.collectionNames} clickHandler={clickHandler} deleteHandler={context?.deleteCollection} editHandler={editHandler} />
-            <Button title="create new collection" onPress={() => createNewCollectionHandler()} />
-            <Button title="add new item to current collection" onPress={() => newItemHandler()} />
-
+            <ScrollView>
+                <List listData={context?.collectionNames} clickHandler={clickHandler} deleteHandler={context?.deleteCollection} editHandler={editHandler} />
+                <Button title="create new collection" onPress={() => createNewCollectionHandler()} />
+            </ScrollView>
         </SafeAreaView>
     )
 }

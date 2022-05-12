@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {View, SafeAreaView, Text, Dimensions} from 'react-native'
+import {View, SafeAreaView, Text, Dimensions, ScrollView} from 'react-native'
 import { Picker } from '@react-native-picker/picker';
 import {
     LineChart,
@@ -62,19 +62,21 @@ export default ({navigation}) => {
     //todo: there isn't an attribute with type number, have line chart say "there must be a number"
     return (
         <View>
-            <ChartTitle 
-                fields={schema} 
-                chartType={chartType} 
-                setChartType={setChartType} 
-                dependentVar={dependentVar} 
-                setDependentVar={setDependentVar}
-                independentVar={independentVar}
-                setIndependentVar={setIndependentVar}
-            />
-              <DynamicGraph chartType={chartType} entries={entries} dependentVar={dependentVar} independentVar={independentVar} />
+            <ScrollView>
+                <ChartTitle 
+                    fields={schema} 
+                    chartType={chartType} 
+                    setChartType={setChartType} 
+                    dependentVar={dependentVar} 
+                    setDependentVar={setDependentVar}
+                    independentVar={independentVar}
+                    setIndependentVar={setIndependentVar}
+                />
+                <DynamicGraph chartType={chartType} entries={entries} dependentVar={dependentVar} independentVar={independentVar == 'Time and Date Submitted' ? 'datetime_of_initial_submit' : independentVar} />
 
-              {/* ONLY RENDER STATS IF THERE IS A ATTRIBUTE THAT'S A NUMBER */}
-              <FieldStats fields={schema} entries={entries}/>
+                {/* ONLY RENDER STATS IF THERE IS A ATTRIBUTE THAT'S A NUMBER */}
+                <FieldStats fields={schema} entries={entries}/>
+            </ScrollView>
         </View>
     )
 }

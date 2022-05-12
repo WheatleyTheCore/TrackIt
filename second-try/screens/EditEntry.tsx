@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {View, SafeAreaView, Text, TouchableOpacity} from 'react-native'
+import {View, SafeAreaView, Text, TouchableOpacity, ScrollView} from 'react-native'
 import AddEntryForm from '../components/AddEntryForm'
 import EditEntryForm from '../components/EditEntryForm'
 import { AppDataContext } from '../DataMgmt/AppDataContext'
@@ -34,21 +34,23 @@ export default ({route, navigation}) => {
     //TODO REPLACE ADD ENTRY FORM WITH EDIT ENTRY FORM HERE
     return (
         <View>
-            <EditEntryForm 
-            entrySchema={schema} 
-            entry={entry}
-            handleInputChange={(updatedText: string, attribute: any) => {
-                let updatedEntry = {...entry}
-                updatedEntry[attribute] = updatedText
-                setEntry(updatedEntry)
-            }}
-            handleSubmitForm={() => {
-                console.log('=================updating entry=============')
-                context?.updateEntry(entry, entryIndex)
-                context?.loadCurrentCollectionData(context.currentCollection.name)
-                navigation.navigate("ViewRawCollectionData")
-            }} />
-            <Text>{JSON.stringify(context?.currentCollection.entries[entryIndex])}</Text>
+            <ScrollView>
+                <EditEntryForm 
+                entrySchema={schema} 
+                entry={entry}
+                handleInputChange={(updatedText: string, attribute: any) => {
+                    let updatedEntry = {...entry}
+                    updatedEntry[attribute] = updatedText
+                    setEntry(updatedEntry)
+                }}
+                handleSubmitForm={() => {
+                    console.log('=================updating entry=============')
+                    context?.updateEntry(entry, entryIndex)
+                    context?.loadCurrentCollectionData(context.currentCollection.name)
+                    navigation.navigate("ViewRawCollectionData")
+                }} />
+                <Text>{JSON.stringify(context?.currentCollection.entries[entryIndex])}</Text>
+            </ScrollView>
         </View>
     )
 }

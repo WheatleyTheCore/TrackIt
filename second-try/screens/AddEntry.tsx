@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
 import { useForm } from 'react-hook-form'
-import {View, SafeAreaView, Text} from 'react-native'
+import {View, SafeAreaView, Text, ScrollView} from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import AddEntryForm from '../components/AddEntryForm'
 
@@ -51,7 +51,9 @@ export default ({navigation}) => {
 
     return (
         <View>
-            <AddEntryForm entrySchema={schema} handleSubmitForm={onSubmit}/>
+            <ScrollView>
+                <AddEntryForm entrySchema={schema} handleSubmitForm={onSubmit}/>
+            </ScrollView>
         </View>
     )
 }

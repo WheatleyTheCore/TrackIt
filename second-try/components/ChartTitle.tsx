@@ -36,7 +36,10 @@ export default ({fields, chartType, setChartType, dependentVar, setDependentVar,
                         <Text> of </Text>
                         <FieldSelector fieldsObject={fields} types={["number"]} selectedField={dependentVar} setSelectedField={setDependentVar} />
                         <Text> over </Text>
-                        <FieldSelector fieldsObject={fields} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer"]} selectedField={independentVar} setSelectedField={setIndependentVar}/>
+                        <FieldSelector fieldsObject={[...fields, {
+                            name: 'Time and Date Submitted',
+                            type: "datetime_of_initial_submit"
+                        }]} types={["number", "text", "barometer", "accelerometer", "magnetometer", "gyroscope", "pedometer", "datetime_of_initial_submit"]} selectedField={independentVar} setSelectedField={setIndependentVar}/>
                     </View> :
                     chartType == 'bar' ? 
                     <View>

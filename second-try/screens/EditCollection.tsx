@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {View, SafeAreaView, Text, TextInput, Button} from 'react-native'
+import {View, SafeAreaView, Text, TextInput, Button, ScrollView} from 'react-native'
 import EditCollectionForm from '../components/EditCollectionForm'
 import { AppDataContext } from '../DataMgmt/AppDataContext'
 import uuid from 'react-native-uuid'
@@ -29,50 +29,52 @@ export default ({route, navigation}) => {
 
     return (
         <View>
-            <TextInput
-                style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
-                onChangeText={setTitle}
-                value={title}
-                placeholder="collection title"
-            />
-            {/**TODO make edit collection form that takes schema object instead of the object with "Fields " property */}
-            <EditCollectionForm entrySchema={schema} 
-                handleTypeChange={(type, index) => {
-                    let previousSchema = [...schema]
-                    previousSchema[index].type = type
-                    console.log(previousSchema)
-                    setSchema(previousSchema)
-                }}
-                handleNameChange={(updatedText: string, index: number) => {
-                    let previousSchema = [...schema]
-                    previousSchema[index].name = updatedText
-                    setSchema(previousSchema)
-                }}
-                handleSubmitForm={(data) => {
-                    console.log('----------data from the collection screen--------')
-                    const newCollection = context?.collectionFactory(title, schema)
-                    context?.updateCollection(newCollection, title)
-                }}
-                handleDeleteField={(index: number) => {
-                    console.log('==================deleting field================')
-                    let schemaCopy = [...schema]
+            <ScrollView>
+                <TextInput
+                    style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
+                    onChangeText={setTitle}
+                    value={title}
+                    placeholder="collection title"
+                />
+                {/**TODO make edit collection form that takes schema object instead of the object with "Fields " property */}
+                <EditCollectionForm entrySchema={schema} 
+                    handleTypeChange={(type, index) => {
+                        let previousSchema = [...schema]
+                        previousSchema[index].type = type
+                        console.log(previousSchema)
+                        setSchema(previousSchema)
+                    }}
+                    handleNameChange={(updatedText: string, index: number) => {
+                        let previousSchema = [...schema]
+                        previousSchema[index].name = updatedText
+                        setSchema(previousSchema)
+                    }}
+                    handleSubmitForm={(data) => {
+                        console.log('----------data from the collection screen--------')
+                        const newCollection = context?.collectionFactory(title, schema)
+                        context?.updateCollection(newCollection, title)
+                    }}
+                    handleDeleteField={(index: number) => {
+                        console.log('==================deleting field================')
+                        let schemaCopy = [...schema]
 
-                    schemaCopy.splice(index, 1)
-                    setSchema(schemaCopy)
+                        schemaCopy.splice(index, 1)
+                        setSchema(schemaCopy)
+                    }} />
+                <Button title="add field" onPress={() => {
+                    let previousSchema = [...schema]
+                    previousSchema.push({
+                        id: uuid.v4(),
+                        name: '',
+                        type:'text',
+                        required:{
+                            value:true,
+                            message:'Employee Last Name is required'
+                        },
+                    })
+                    setSchema(previousSchema)
                 }} />
-            <Button title="add field" onPress={() => {
-                let previousSchema = [...schema]
-                previousSchema.push({
-                    id: uuid.v4(),
-                    name: '',
-                    type:'text',
-                    required:{
-                        value:true,
-                        message:'Employee Last Name is required'
-                    },
-                })
-                setSchema(previousSchema)
-            }} />
+            </ScrollView>
         </View>
     )
 }

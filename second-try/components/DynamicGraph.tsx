@@ -68,15 +68,25 @@ import {
           let dataObject = {}
           let bothValuesAreNumbers = true;
 
+          //if both are numbers then sort them as such
           entries.map((entry: any) => {
             if ((isNaN(entry[dependentVar])) || (!isNaN(entry[independentVar]))) bothValuesAreNumbers = false;
             if (independentVar in entry) dataObject[entry[independentVar]] = entry[dependentVar]
           })
 
+
+
           if (bothValuesAreNumbers) {
             const orderedData = Object.keys(dataObject).sort().reduce(
               (obj, key) => { 
-                obj[key] = dataObject[key]; 
+                if (independentVar == 'datetime_of_initial_submit') {
+                  let date = new Date(key)
+                  let parsedDate = date.toString()
+                  obj[parsedDate] = dataObject[key]
+                } else {
+                  obj[key] = dataObject[key]; 
+                }
+                
                 return obj;
               }, 
               {}
@@ -84,6 +94,22 @@ import {
 
             dataObject = orderedData;
           }
+
+          console.log("DATA OBJECT")
+          console.log(dataObject)
+          // if (independentVar == 'datetime_of_initial_submit') {
+          //   const orderedData = Object.keys(dataObject).sort((a, b) => {
+          //     return d
+          //   }).reduce(
+          //     (obj, key) => { 
+          //       obj[key] = dataObject[key]; 
+          //       return obj;
+          //     }, 
+          //     {}
+          //   );
+
+          //   dataObject = orderedData;
+          // }
           
 
           const labels = Object.keys(dataObject)
