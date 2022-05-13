@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import {Picker} from '@react-native-picker/picker';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitForm, handleDeleteField}) => {
+export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitForm, handleAddField, handleDeleteField}) => {
     
       return (
         <ScrollView>
@@ -13,9 +13,7 @@ export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitFo
               return (
                 <View key={item.id} >
                     <Text>Attribute {index + 1} Title</Text>
-                    <Button title={`delete attribute ${index + 1}`} onPress={() => {
-                      handleDeleteField(index)
-                    }} />
+                    
                   <TextInput
                     style={{borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 4}}
                     onChangeText={(text: string) => handleNameChange(text, index)}
@@ -37,12 +35,16 @@ export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitFo
                   <Picker.Item label="Magnetometer Data" value="magnetometer" />
                   <Picker.Item label="Pedometer Data" value="pedometer" />
                 </Picker>
+                <Button title={`delete attribute ${index + 1}`} onPress={() => {
+                      handleDeleteField(index)
+                    }} />
               
               </View>
             )
           })  
           
         }
+          <Button title="Add Field" onPress={() => handleAddField()} />
           <Button title="Submit" onPress={() => handleSubmitForm()} />
         </ScrollView>
       );

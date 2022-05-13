@@ -3,7 +3,7 @@ import {View, SafeAreaView, Text, TextInput, Button, Alert, ScrollView} from 're
 import CreateCollectionForm from '../components/CreateCollectionForm'
 import { AppDataContext } from '../DataMgmt/AppDataContext'
 import uuid from 'react-native-uuid'
-export default () => {
+export default ({navigation}) => {
     const context = useContext(AppDataContext)
 
 
@@ -62,6 +62,20 @@ export default () => {
                         }
                         const newCollection = context?.collectionFactory(title, schema.Fields)
                         context?.createCollection(newCollection)
+                        navigation.navigate("Home")
+                    }}
+                    handleAddField={() => {
+                        let previousSchema = {...schema}
+                        previousSchema.Fields.push({
+                            id: uuid.v4(),
+                            name: '',
+                            type:'text',
+                            required:{
+                                value:true,
+                                message:'Employee Last Name is required'
+                            },
+                        })
+                        setSchema(previousSchema)
                     }}
                     handleDeleteField={(index: number) => {
                         console.log('==================deleting field================')
@@ -70,19 +84,6 @@ export default () => {
                         schemaCopy.Fields.splice(index, 1)
                         setSchema(schemaCopy)
                     }} />
-                <Button title="add field" onPress={() => {
-                    let previousSchema = {...schema}
-                    previousSchema.Fields.push({
-                        id: uuid.v4(),
-                        name: '',
-                        type:'text',
-                        required:{
-                            value:true,
-                            message:'Employee Last Name is required'
-                        },
-                    })
-                    setSchema(previousSchema)
-                }} />
             </ScrollView>
         </View>
     )

@@ -53,6 +53,7 @@ export default ({route, navigation}) => {
                         console.log('----------data from the collection screen--------')
                         const newCollection = context?.collectionFactory(title, schema)
                         context?.updateCollection(newCollection, title)
+                        navigation.navigate("Home")
                     }}
                     handleDeleteField={(index: number) => {
                         console.log('==================deleting field================')

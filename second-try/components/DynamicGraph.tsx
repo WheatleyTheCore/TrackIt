@@ -11,7 +11,7 @@ import {
 
   export default ({chartType, entries, dependentVar, independentVar}) =>  {
 
-      const screenWidth = Dimensions.get("window").width
+      const graphWidth = Dimensions.get("window").width - 50
       const chartConfig={
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#fb8c00",
@@ -54,7 +54,7 @@ import {
                 values={dates}
                 endDate={new Date()}
                 numDays={105}
-                width={screenWidth}
+                width={graphWidth}
                 height={220}
                 chartConfig={chartConfig}
                 onDayPress={val => console.log(val)}
@@ -132,7 +132,7 @@ import {
                   }
                 ]
               }}
-              width={screenWidth} // from react-native
+              width={graphWidth} // from react-native
               height={220}
               chartConfig={chartConfig}
             />
@@ -174,7 +174,7 @@ import {
           return (
             <BarChart
             data={barGraphInputData}
-            width={screenWidth}
+            width={graphWidth}
             height={220}
             chartConfig={chartConfig}
             fromZero={true}
@@ -215,7 +215,7 @@ import {
             return (
               <PieChart
                 data={piedata}
-                width={screenWidth}
+                width={graphWidth}
                 height={220}
                 chartConfig={chartConfig}
                 accessor={"occurences"}

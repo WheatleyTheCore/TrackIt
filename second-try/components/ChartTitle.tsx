@@ -18,6 +18,8 @@ interface props {
    ------------------------------------------------------------*/
 
 export default ({fields, chartType, setChartType, dependentVar, setDependentVar, independentVar, setIndependentVar}: props) =>  {
+    console.log('FIELDS')
+    console.log(fields)
     return (
         <View>
             <Picker

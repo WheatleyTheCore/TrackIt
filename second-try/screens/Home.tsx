@@ -35,6 +35,18 @@ export default ({navigation}:any) => {
         }
     }, [didLoadCollectionNames])
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            if (context?.currentCollection != undefined) {
+                setTimeout(() => {
+                    context.getAllCollectionNames()
+                }, 100)
+            }
+        });
+        return unsubscribe;
+      }, [navigation]);
+    
+
     //TODO the keys for stuff are now GUIDs, we'll need to load all the collections into memory to get their names. 
     return (
         <SafeAreaView>

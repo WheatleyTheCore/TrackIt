@@ -28,7 +28,7 @@ export default ({navigation}) => {
             if (context?.currentCollection != undefined) {
                 setTimeout(() => {
                     setEntries(context.currentCollection.entries)
-                }, 100)
+                }, 500)
             }
         });
         return unsubscribe;
