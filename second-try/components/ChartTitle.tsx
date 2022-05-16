@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { View, Dimensions, Text } from 'react-native';
+import { View, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import FieldSelector from './FieldSelector';
 
 interface props {
@@ -18,20 +19,34 @@ interface props {
    ------------------------------------------------------------*/
 
 export default ({fields, chartType, setChartType, dependentVar, setDependentVar, independentVar, setIndependentVar}: props) =>  {
+
+    const { showActionSheetWithOptions } = useActionSheet();
+
+    const openActionSheet = () => {
+        let options = ['bar', 'pie', 'contribution']
+        if (fields.length > 1) options.push('line')
+        const destructiveButtonIndex = 0;
+        const cancelButtonIndex = options.length;
+        showActionSheetWithOptions(
+            {
+              options,
+              destructiveButtonIndex,
+              cancelButtonIndex,
+            },
+            (buttonIndex) => {
+              //TODO don't change thing if user cancels
+                setChartType(options[buttonIndex])
+              // Do something here depending on the button index selected
+            }
+          );
+    }
     console.log('FIELDS')
     console.log(fields)
     return (
         <View>
-            <Picker
-                selectedValue={chartType}
-                onValueChange={(value, index) => {
-                    setChartType(value)
-                }}>
-                    {fields.length > 1 && <Picker.Item label="Line Chart" value="line" />}
-                    <Picker.Item label="Bar Chart" value="bar" />
-                    <Picker.Item label="Pie Chart" value="pie" />
-                    <Picker.Item label="Contribution Graph" value="contribution" />
-                </Picker>
+            <TouchableOpacity onPress={() => openActionSheet()} style={{backgroundColor: 'grey'}}>
+                      <Text>{chartType}</Text>
+                  </TouchableOpacity>
                 {
                     chartType == 'line' ? 
                     <View>
