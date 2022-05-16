@@ -1,10 +1,32 @@
 import React, { useState } from 'react'
-import { Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import {Picker} from '@react-native-picker/picker';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 
 export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitForm, handleAddField, handleDeleteField}) => {
+
+  const { showActionSheetWithOptions } = useActionSheet();
+
+    const openActionSheet = (index) => {
+        let options = ['text', 'number', 'accelerometer', 'gyroscope', 'barometer', 'magnetometer', 'pedometer']
+        const destructiveButtonIndex = 0;
+        const cancelButtonIndex = options.length;
+        showActionSheetWithOptions(
+            {
+              options,
+              destructiveButtonIndex,
+              cancelButtonIndex,
+            },
+            (buttonIndex) => {
+              //TODO don't change thing if user cancels
+                handleTypeChange(options[buttonIndex], index)
+              // Do something here depending on the button index selected
+            }
+          );
+    }
+
     
       return (
         <ScrollView>
@@ -21,20 +43,9 @@ export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitFo
                     placeholder="attribute name"
                   />
                   <Text>Attribute {index + 1} Type</Text>
-                  <Picker
-                  selectedValue={item.type}
-                  onValueChange={(itemValue, itemIndex) => {
-                    handleTypeChange(itemValue, index)
-                  }
-                  }>
-                  <Picker.Item label="Text" value="text" />
-                  <Picker.Item label="Number" value="number" />
-                  <Picker.Item label="Accelerometer Data" value="accelerometer" />
-                  <Picker.Item label="Gyroscope Data" value="gyroscope" />
-                  <Picker.Item label="Barometer Data" value="barometer" />
-                  <Picker.Item label="Magnetometer Data" value="magnetometer" />
-                  <Picker.Item label="Pedometer Data" value="pedometer" />
-                </Picker>
+                  <TouchableOpacity onPress={() => openActionSheet(index)} style={{backgroundColor: 'grey'}}>
+                      <Text>{item.type}</Text>
+                  </TouchableOpacity>
                 <Button title={`delete attribute ${index + 1}`} onPress={() => {
                       handleDeleteField(index)
                     }} />
