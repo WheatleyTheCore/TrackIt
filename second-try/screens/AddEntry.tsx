@@ -20,6 +20,7 @@ export default ({navigation}) => {
 
     const { control, handleSubmit, formState: { errors } } = useForm({});
       const onSubmit = (data: any) => {
+        console.log(data)
         data['datetime_of_initial_submit'] = new Date()
         context?.addEntry(data)
         context?.loadCurrentCollectionData(context.currentCollection.name)

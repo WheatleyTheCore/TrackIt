@@ -43,7 +43,7 @@ export default ({entrySchema, handleTypeChange, handleNameChange, handleSubmitFo
                     placeholder="attribute name"
                   />
                   <Text>Attribute {index + 1} Type</Text>
-                  <TouchableOpacity onPress={() => openActionSheet(index)} style={{backgroundColor: 'grey'}}>
+                  <TouchableOpacity onPress={() => openActionSheet(index)} style={{width: '70%', margin: 5, backgroundColor: 'grey', alignContent: 'center'}}>
                       <Text>{item.type}</Text>
                   </TouchableOpacity>
                 <Button title={`delete attribute ${index + 1}`} onPress={() => {

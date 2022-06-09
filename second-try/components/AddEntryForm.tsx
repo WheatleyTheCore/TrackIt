@@ -8,6 +8,7 @@ import { Alert } from 'react-native';
 export default ({entrySchema, handleSubmitForm}) => {
 
     const validateInput = (data) => {
+      console.log(data)
       for (const attribute in data) {
         if (attribute == "datetime_of_initial_submit") continue
         const attributeSchema = entrySchema.find(schema => schema.name == attribute)
@@ -26,6 +27,9 @@ export default ({entrySchema, handleSubmitForm}) => {
       const onSubmit = data => {
 
         if (validateInput(data)) handleSubmitForm(data)
+
+        //console.log(data)
+
       }
     
       return (
@@ -59,7 +63,23 @@ export default ({entrySchema, handleSubmitForm}) => {
           })  
           
         }
-          <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+          <Button title="Submit" onPress={() => {
+            // TODO: stop using the form handler so we can create the object we pass to handlesubmit oursevles,
+            //meaning we can add sensor data on the fly.
+            console.log(entrySchema)
+            // if () {
+            //   let dataobject = {
+            //     'datetime_of_initial_submit': ''
+            //   }
+
+            //   console.log(entrySchema)
+
+            //   handleSubmit(dataobject)
+            // } else {
+            //   handleSubmit(onSubmit)
+            // }
+            
+          }} />
         </View>
       );
 }
